@@ -32,10 +32,10 @@ export function SlideLayout({
       <div className="fixed top-4 right-4 md:top-6 md:right-8 z-40 flex items-center gap-2">
                 <button 
           onClick={() => setIsPdfOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 backdrop-blur-md rounded-full transition-colors border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.3)] text-purple-100"
+          className="flex items-center justify-center w-10 h-10 bg-purple-500/20 hover:bg-purple-500/30 backdrop-blur-md rounded-full transition-colors border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.3)] text-purple-100"
+          title="สไลด์ประกอบ"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-          <span className="hidden sm:inline text-sm font-medium">สไลด์ประกอบ</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         </button>
 
         <button 
@@ -101,7 +101,7 @@ export function SlideLayout({
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="absolute right-0 top-0 bottom-0 w-full md:w-96 bg-[#080808]/95 backdrop-blur-2xl border-l border-white/10 z-50 flex flex-col shadow-2xl"
+                className="absolute right-0 top-0 bottom-0 w-full md:w-96 bg-black/30 backdrop-blur-3xl border-l border-white/10 z-50 flex flex-col shadow-2xl"
               >
                 <div className="h-16 flex items-center justify-between px-6 border-b border-white/10 shrink-0">
                   <h3 className="font-bold text-lg text-white">สารบัญเนื้อหา (Menu)</h3>
@@ -151,18 +151,15 @@ export function SlideLayout({
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="absolute inset-4 md:inset-10 z-[70] bg-[#1a1a1a] border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+                className="absolute inset-2 md:inset-4 z-[70] bg-[#1a1a1a]/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
               >
-                <div className="h-14 flex items-center justify-between px-6 border-b border-white/10 bg-black/50 shrink-0">
-                  <h3 className="font-bold text-white flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-purple-400"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
-                    สไลด์ประกอบ (PDF)
-                  </h3>
-                  <button onClick={() => setIsPdfOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-300 hover:text-white bg-white/5">
-                    <X size={20} />
-                  </button>
-                </div>
-                <div className="flex-1 w-full h-full bg-white">
+                <button 
+                  onClick={() => setIsPdfOpen(false)} 
+                  className="absolute top-4 right-4 z-10 p-2 hover:bg-black/50 rounded-full transition-colors text-slate-400 hover:text-white bg-black/30 backdrop-blur-md border border-white/20"
+                >
+                  <X size={24} />
+                </button>
+                <div className="flex-1 w-full h-full bg-white relative">
                   <iframe 
                     src="/docs/present.pdf#toolbar=0&navpanes=0" 
                     className="w-full h-full border-0"
@@ -177,6 +174,8 @@ export function SlideLayout({
     </div>
   );
 }
+
+
 
 
 
