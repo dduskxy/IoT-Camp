@@ -113,7 +113,7 @@ export default async function WorkshopPage({ params }: { params: Promise<{ step:
   };
 
   return (
-    <SlideLayout currentStep={stepId}>
+    <SlideLayout currentStep={stepId} totalSlides={workshopSlides.length}>
       {renderSlideContent()}
     </SlideLayout>
   );
