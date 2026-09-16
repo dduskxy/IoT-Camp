@@ -58,7 +58,7 @@ export function SlideLayout({
                 </div>
 
                 {/* The Interactive Content */}
-                <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-3xl p-4 md:p-6 shadow-2xl relative overflow-y-auto min-h-0">
+                <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-3xl p-4 md:p-6 shadow-2xl relative overflow-y-auto min-h-0 flex flex-col">
                   {children}
                 </div>
               </motion.div>
