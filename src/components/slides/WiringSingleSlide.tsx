@@ -94,7 +94,7 @@ export function WiringSingleSlide() {
     <div className="w-full h-full flex flex-col bg-transparent text-white font-sans">
       <div className="text-center mb-4 flex flex-col items-center">
         <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-          จำลองการต่อวงจร: Arduino + NRF24L01
+          ขั้นตอนการต่อวงจร (Step-by-Step Wiring)
         </h2>
         <p className="text-gray-400 mt-1 text-sm md:text-base mb-3">ทำตามทีละขั้นตอน เพื่อป้องกันอุปกรณ์พัง</p>
         <button 
