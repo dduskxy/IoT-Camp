@@ -102,7 +102,7 @@ export function WiringSingleSlide() {
             exit={{ opacity: 0, height: 0, scale: 0.95 }} 
             className="w-full max-w-2xl mx-auto mb-6 overflow-hidden rounded-xl border border-white/10 shadow-2xl relative"
           >
-            <img src="/images/wiring-reference.jpg" alt="Wiring Reference" className="w-full object-contain bg-white/5" />
+            <img src="/images/wiring-guide.jpg" alt="Wiring Reference" className="w-full object-contain bg-white/5" />
             <button onClick={() => setShowReference(false)} className="absolute top-3 right-3 p-1.5 bg-black/60 hover:bg-black text-white rounded-full backdrop-blur-sm transition-colors">
               <XCircle size={24} />
             </button>
@@ -220,12 +220,18 @@ export function WiringSingleSlide() {
             </AnimatePresence>
           </div>
           
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex justify-center gap-4">
              <button
-                onClick={() => { setConnections({}); setSelectedNrfPin(null); setActiveStep(0); }}
+                onClick={() => { setConnections({}); setSelectedNrfPin(null); setActiveStep(1); }}
                 className="text-xs px-3 py-1 bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors flex items-center gap-1"
               >
                 <RefreshCcw size={12} /> เริ่มต่อสายใหม่ตั้งแต่ต้น
+              </button>
+              <button
+                onClick={() => setShowReference(true)}
+                className="text-xs px-3 py-1 bg-indigo-500/20 hover:bg-indigo-500/40 text-indigo-300 border border-indigo-500/30 rounded transition-colors flex items-center gap-1"
+              >
+                <ImageIcon size={12} /> ดูรูปไกด์การต่อสาย
               </button>
           </div>
         </div>
