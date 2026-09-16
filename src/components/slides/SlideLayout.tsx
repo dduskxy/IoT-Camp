@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronRight, Menu, X, BookOpen, GraduationCap } from 'lucide-react';
+import { BookOpen, X } from 'lucide-react';
 import { workshopSlides } from '@/data/workshop';
 
 export function SlideLayout({ 
@@ -21,14 +21,6 @@ export function SlideLayout({
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => { setIsMounted(true); }, []);
-
-  const handleNext = () => {
-    if (currentStep < totalSlides) router.push(`/workshop/${currentStep + 1}`);
-  };
-
-  const handlePrevious = () => {
-    if (currentStep > 1) router.push(`/workshop/${currentStep - 1}`);
-  };
 
   if (!isMounted) return <div className="min-h-screen bg-[#0B0F19]" />;
 
@@ -66,7 +58,7 @@ export function SlideLayout({
                 </div>
 
                 {/* The Interactive Content */}
-                <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-3xl p-4 md:p-6 shadow-2xl relative overflow-y-auto min-h-0 pb-24">
+                <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-3xl p-4 md:p-6 shadow-2xl relative overflow-y-auto min-h-0">
                   {children}
                 </div>
               </motion.div>
@@ -127,31 +119,6 @@ export function SlideLayout({
             </>
           )}
         </AnimatePresence>
-      </div>
-
-      {/* Minimal Floating Navigation */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-[#0B0F19]/90 backdrop-blur-xl border border-white/10 p-1.5 rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.5)] z-40">
-        <button 
-          onClick={handlePrevious} 
-          disabled={currentStep <= 1}
-          className="flex items-center gap-1 px-4 py-2.5 rounded-full font-semibold text-sm transition-all disabled:opacity-30 hover:bg-white/10 disabled:hover:bg-transparent text-slate-300"
-        >
-          <ChevronLeft size={18} /> Back
-        </button>
-        
-        <div className="px-4 py-1 bg-white/5 rounded-full border border-white/5 flex items-center">
-          <span className="text-sm font-bold text-slate-300">
-            {currentStep} <span className="text-slate-600 mx-1">/</span> {totalSlides}
-          </span>
-        </div>
-        
-        <button 
-          onClick={handleNext} 
-          disabled={currentStep >= totalSlides}
-          className="flex items-center gap-1 px-5 py-2.5 rounded-full font-bold text-sm transition-all bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)] disabled:opacity-30 disabled:shadow-none"
-        >
-          Next <ChevronRight size={18} />
-        </button>
       </div>
     </div>
   );
