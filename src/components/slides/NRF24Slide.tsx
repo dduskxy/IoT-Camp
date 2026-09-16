@@ -14,7 +14,7 @@ export function NRF24Slide() {
   ];
 
   return (
-    <div className="w-full h-full p-6 flex flex-col items-center justify-center bg-transparent text-white">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-transparent text-white">
       <motion.div 
         className="w-full max-w-4xl bg-white/5 border border-white/10 rounded-3xl p-10 backdrop-blur-md shadow-[0_0_40px_rgba(139,92,246,0.15)]"
         initial={{ opacity: 0, y: 20 }}

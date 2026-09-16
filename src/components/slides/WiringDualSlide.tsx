@@ -4,7 +4,7 @@ import { RadioTower, Send, Smartphone } from "lucide-react";
 
 export function WiringDualSlide() {
   return (
-    <div className="w-full h-full p-6 flex flex-col justify-center bg-transparent text-white font-sans">
+    <div className="w-full h-full flex flex-col justify-center bg-transparent text-white font-sans">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">ระบบสื่อสาร 2 ฝั่ง (TX & RX)</h2>
         <p className="text-gray-400 mt-2">ภาพรวมการเชื่อมต่อระบบ IoT เต็มรูปแบบ</p>

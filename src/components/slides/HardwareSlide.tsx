@@ -14,7 +14,7 @@ export function HardwareSlide() {
   const [selectedPin, setSelectedPin] = useState(PINS[0]);
 
   return (
-    <div className="w-full h-full flex flex-col md:flex-row gap-6 p-6 bg-transparent text-white font-sans">
+    <div className="w-full h-full flex flex-col md:flex-row gap-6 bg-transparent text-white font-sans">
       {/* Board Layout (Simplified) */}
       <motion.div 
         className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 backdrop-blur-md relative shadow-[0_0_30px_rgba(59,130,246,0.1)]"

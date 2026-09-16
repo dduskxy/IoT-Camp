@@ -7,7 +7,7 @@ export function TxVsRxSlide() {
   const [activeTab, setActiveTab] = useState<'TX' | 'RX' | null>(null);
 
   return (
-    <div className="flex flex-col h-full w-full p-4 md:p-6 text-white bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+    <div className="flex flex-col h-full w-full text-white">
       <motion.h2 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

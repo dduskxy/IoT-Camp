@@ -6,7 +6,7 @@ import { Cpu, Wifi, Laptop, ArrowRight } from 'lucide-react';
 
 export function FinalChallengeSlide() {
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full text-white p-4 md:p-6">
+    <div className="flex flex-col items-center justify-center w-full h-full text-white">
       <div className="text-center mb-16">
         <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
           ความท้าทายสุดท้าย (Final Challenge)

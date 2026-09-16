@@ -34,7 +34,7 @@ export function DualSerialSlide() {
   }, []);
 
   return (
-    <div className="flex flex-col h-full w-full p-4 md:p-6 text-white bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_40px_rgba(59,130,246,0.2)]">
+    <div className="flex flex-col h-full w-full text-white">
       <h2 className="text-3xl font-bold text-center mb-4 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
         จำลองการรับส่งข้อมูล (Live Simulation)
       </h2>

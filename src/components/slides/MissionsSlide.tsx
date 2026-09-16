@@ -22,7 +22,7 @@ export function MissionsSlide() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full text-white p-4 md:p-6">
+    <div className="flex flex-col items-center justify-center w-full h-full text-white">
       <div className="text-center mb-6">
         <motion.div 
           initial={{ scale: 0.8, opacity: 0 }}
