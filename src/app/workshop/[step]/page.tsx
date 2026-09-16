@@ -16,7 +16,6 @@ import { DualSerialSlide } from "@/components/slides/DualSerialSlide";
 import { DataSimulationSlide } from "@/components/slides/DataSimulationSlide";
 import { MissionsSlide } from "@/components/slides/MissionsSlide";
 import { TroubleshootingSlide } from "@/components/slides/TroubleshootingSlide";
-import { FinalChallengeSlide } from "@/components/slides/FinalChallengeSlide";
 
 export function generateStaticParams() {
   return workshopSlides.map((slide) => ({
@@ -60,17 +59,15 @@ export default async function WorkshopPage({ params }: { params: Promise<{ step:
         return <MissionsSlide />;
       case 13:
         return <TroubleshootingSlide />;
-      case 14:
-        return <FinalChallengeSlide />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-full space-y-6 text-center pt-20">
             <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center text-slate-500 border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.02)]">
-              <span className="text-4xl">🚧</span>
+              <span className="text-4xl">??</span>
             </div>
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-white">เนื้อหานี้กำลังอยู่ระหว่างการพัฒนา</h2>
-              <p className="text-slate-400 font-medium">ส่วนถัดไปจะเปิดให้ใช้งานในเร็วๆ นี้</p>
+              <h2 className="text-2xl font-bold text-white">หน้ากำลังสร้าง</h2>
+              <p className="text-slate-400 font-medium">Coming soon</p>
             </div>
           </div>
         );

@@ -19,5 +19,4 @@ export const workshopSlides: Slide[] = [
   { id: 11, title: "Data Simulation", subtitle: "จำลองการส่งข้อมูลไร้สาย", slug: "simulation" },
   { id: 12, title: "Missions", subtitle: "ภารกิจของฐาน", slug: "missions" },
   { id: 13, title: "Troubleshoot", subtitle: "แก้ปัญหาระบบ", slug: "troubleshooting" },
-  { id: 14, title: "Final Challenge", subtitle: "ภารกิจสุดท้าย", slug: "final-challenge" },
 ];
