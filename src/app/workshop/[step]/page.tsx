@@ -68,7 +68,9 @@ export default async function WorkshopPage({ params }: { params: Promise<{ step:
               </ul>
             </div>
             
-            <p className="text-slate-500 font-medium pt-4 tracking-wide text-sm">คลิกปุ่มลูกศรด้านล่าง หรือใช้คีย์บอร์ดเพื่อเริ่มเนื้อหาแรก</p>
+            <p className="flex items-center justify-center gap-2 text-slate-400 font-medium pt-4 tracking-wide text-sm bg-white/5 py-2 px-6 rounded-full border border-white/10 shadow-lg">
+              👆 คลิกปุ่ม <span className="text-blue-400 font-bold">สารบัญบทเรียน</span> มุมขวาบน เพื่อเริ่มเนื้อหาแรก
+            </p>
           </div>
         );
       case 2:
