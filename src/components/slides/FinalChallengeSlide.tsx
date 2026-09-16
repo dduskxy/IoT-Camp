@@ -89,7 +89,7 @@ export function FinalChallengeSlide() {
           ขอบคุณทุกคนที่ตั้งใจเรียนรู้! ขอให้สนุกกับการนำ IoT ไปสร้างสรรค์โปรเจกต์ของตัวเองนะครับ
         </p>
         <div className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-bold shadow-[0_0_20px_rgba(249,115,22,0.4)] flex items-center gap-2 animate-pulse">
-          จบค่าย IoT อย่างเป็นทางการ! 🏆
+          จบ Workshop อย่างเป็นทางการ! 🏆
         </div>
       </motion.div>
     </div>

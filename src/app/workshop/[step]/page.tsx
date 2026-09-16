@@ -37,7 +37,7 @@ export default async function WorkshopPage({ params }: { params: Promise<{ step:
         return (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-10 max-w-3xl mx-auto pt-10">
             <div className="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-6 py-2 rounded-full text-xs font-black tracking-[0.2em] uppercase">
-              Welcome to the Camp
+              Welcome to the Workshop
             </div>
             
             <h2 className="text-5xl md:text-6xl font-black text-white leading-tight tracking-tight">

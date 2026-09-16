@@ -70,7 +70,7 @@ export default function Home() {
             >
               Smart Automation <br className="hidden md:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
-                Camp 2026
+                Workshop 2026
               </span>
             </motion.h1>
             

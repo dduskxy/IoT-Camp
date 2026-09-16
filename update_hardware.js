@@ -1,4 +1,7 @@
-"use client";
+const fs = require('fs');
+
+const hwSlidePath = 'C:/Users/asus/Documents/GitHub/IoT-Camp/src/components/slides/HardwareSlide.tsx';
+const hwCode = `"use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cpu, Layers, Radio, Split, Lightbulb, Monitor, Usb, Info } from "lucide-react";
@@ -24,7 +27,7 @@ export function HardwareSlide() {
         animate={{ opacity: 1, x: 0 }}
       >
         <h2 className="text-3xl font-bold mb-6 text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]">
-          อุปกรณ์ที่ต้องใช้ในฐานนี้
+          อุปกรณ์ที่ต้องใช้ในแคมป์
         </h2>
         
         <div className="grid grid-cols-1 gap-3 overflow-y-auto custom-scrollbar pr-2 flex-1">
@@ -35,15 +38,15 @@ export function HardwareSlide() {
               <motion.button
                 key={eq.id}
                 onClick={() => setSelectedEq(eq)}
-                className={`p-4 rounded-xl flex items-center gap-4 transition-all duration-300 border ${isSelected ? 'bg-blue-500/20 border-blue-400/50 shadow-[0_0_20px_rgba(59,130,246,0.4)]' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+                className={\`p-4 rounded-xl flex items-center gap-4 transition-all duration-300 border \${isSelected ? 'bg-blue-500/20 border-blue-400/50 shadow-[0_0_20px_rgba(59,130,246,0.4)]' : 'bg-white/5 border-white/10 hover:bg-white/10'}\`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className={`p-2 rounded-lg ${isSelected ? 'bg-blue-500/30' : 'bg-white/10'}`}>
+                <div className={\`p-2 rounded-lg \${isSelected ? 'bg-blue-500/30' : 'bg-white/10'}\`}>
                   <Icon className={isSelected ? 'text-blue-400' : 'text-gray-400'} size={24} />
                 </div>
                 <div className="text-left">
-                  <span className={`block font-bold text-lg ${isSelected ? 'text-blue-300' : 'text-white'}`}>{eq.name}</span>
+                  <span className={\`block font-bold text-lg \${isSelected ? 'text-blue-300' : 'text-white'}\`}>{eq.name}</span>
                   <span className="text-sm text-gray-400">{eq.function}</span>
                 </div>
               </motion.button>
@@ -84,3 +87,7 @@ export function HardwareSlide() {
     </div>
   );
 }
+`;
+
+fs.writeFileSync(hwSlidePath, hwCode);
+console.log('Updated HardwareSlide');
