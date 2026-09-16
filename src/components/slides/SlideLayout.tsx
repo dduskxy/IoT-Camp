@@ -22,17 +22,17 @@ export function SlideLayout({
 
   useEffect(() => { setIsMounted(true); }, []);
 
-  if (!isMounted) return <div className="min-h-screen bg-[#0B0F19]" />;
+  if (!isMounted) return <div className="min-h-screen bg-[#030303] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(79,70,229,0.15),rgba(255,255,255,0))]" />;
 
   return (
-    <div className="flex flex-col h-screen w-full bg-[#0B0F19] text-slate-200 font-sans overflow-hidden">
+    <div className="flex flex-col h-screen w-full bg-[#030303] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(79,70,229,0.15),rgba(255,255,255,0))] text-slate-200 font-sans overflow-hidden">
       
       {/* Floating TOC Button */}
       <button 
         onClick={() => setIsSidebarOpen(true)}
-        className="fixed top-4 right-4 md:top-6 md:right-8 z-40 flex items-center gap-2 px-4 py-2 bg-[#111827]/80 hover:bg-[#1f2937]/90 backdrop-blur-md rounded-full transition-colors border border-white/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] text-slate-300"
+        className="fixed top-4 right-4 md:top-6 md:right-8 z-40 flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-full transition-colors border border-white/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] text-slate-300"
       >
-        <BookOpen size={16} className="text-blue-400" />
+        <BookOpen size={16} className="text-indigo-400" />
         <span className="hidden sm:inline text-sm font-medium">สารบัญบทเรียน</span>
       </button>
 
@@ -53,7 +53,7 @@ export function SlideLayout({
               >
                 {/* Clean, Readable Header */}
                 <div className="mb-4 md:mb-6 text-center md:text-left shrink-0">
-                  <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-2 drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]">{slide.title}</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-indigo-300 to-purple-300 mb-2 drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]">{slide.title}</h2>
                   <p className="text-lg text-slate-400">{slide.subtitle}</p>
                 </div>
 
@@ -84,7 +84,7 @@ export function SlideLayout({
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="absolute right-0 top-0 bottom-0 w-full md:w-96 bg-[#111827] border-l border-white/10 z-50 flex flex-col shadow-2xl"
+                className="absolute right-0 top-0 bottom-0 w-full md:w-96 bg-[#080808]/95 backdrop-blur-2xl border-l border-white/10 z-50 flex flex-col shadow-2xl"
               >
                 <div className="h-16 flex items-center justify-between px-6 border-b border-white/10 shrink-0">
                   <h3 className="font-bold text-lg text-white">สารบัญเนื้อหา (Menu)</h3>
@@ -103,7 +103,7 @@ export function SlideLayout({
                         }}
                         className={`w-full flex items-center gap-4 px-4 py-4 rounded-xl text-left transition-all ${
                           s.id === currentStep 
-                            ? "bg-blue-500/20 text-blue-300 border border-blue-500/30" 
+                            ? "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.2)]" 
                             : "bg-white/5 text-slate-300 border border-transparent hover:bg-white/10"
                         }`}
                       >
