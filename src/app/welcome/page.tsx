@@ -230,74 +230,34 @@ function TeamSection({ student, onBack }: { student: Student, onBack: () => void
         กลับไปหน้าค้นหา
       </button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Col - Identity */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-md relative overflow-hidden">
-            <div className={`absolute top-0 right-0 w-32 h-32 blur-3xl opacity-20 -mr-10 -mt-10 bg-current ${student.color}`}></div>
-            
-            <div className="text-sm font-mono text-white/50 mb-1">MISSION ACCEPTED</div>
-            <h2 className={`text-4xl font-black tracking-tight mb-2 ${student.color}`}>{student.group}</h2>
-            <div className="text-xl font-medium mb-6">{student.name}</div>
-            
-            <div className="flex items-center space-x-4 text-sm text-white/60">
-              <div className="flex items-center"><Users className="w-4 h-4 mr-2" /> {teamMembers.length} Members</div>
-              <div className="flex items-center"><User className="w-4 h-4 mr-2" /> {student.className}</div>
-            </div>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Identity */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-md relative overflow-hidden flex flex-col justify-center">
+          <div className={`absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-20 -mr-10 -mt-10 bg-current ${student.color}`}></div>
           
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
-            <h3 className="text-lg font-bold mb-4 flex items-center"><Activity className="w-5 h-5 mr-2 text-blue-400" /> Team Members</h3>
-            <ul className="space-y-3">
-              {teamMembers.map((member, idx) => (
-                <li key={member.id} className={`text-sm ${member.id === student.id ? 'text-white font-bold' : 'text-white/60'}`}>
-                  {idx + 1}. {member.name}
-                </li>
-              ))}
-            </ul>
+          <div className="text-sm font-mono text-white/50 mb-2">MISSION ACCEPTED</div>
+          <h2 className={`text-5xl md:text-6xl font-black tracking-tight mb-4 ${student.color}`}>{student.group}</h2>
+          <div className="text-2xl font-medium mb-8 text-white">{student.name}</div>
+          
+          <div className="flex items-center space-x-6 text-sm text-white/60">
+            <div className="flex items-center"><Users className="w-5 h-5 mr-2" /> {teamMembers.length} Members</div>
+            <div className="flex items-center"><User className="w-5 h-5 mr-2" /> {student.className}</div>
           </div>
         </div>
-
-        {/* Right Col - Roles */}
-        <div className="lg:col-span-2">
-          <h3 className="text-2xl font-bold mb-6">Mission Roles</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <RoleCard 
-              icon={<Cpu className="w-8 h-8 text-blue-400" />} 
-              title="Hardware Circuit" 
-              desc="ต่อวงจร อิเล็กทรอนิกส์และเซนเซอร์ให้ทำงานได้ตามโจทย์"
-            />
-            <RoleCard 
-              icon={<Database className="w-8 h-8 text-emerald-400" />} 
-              title="Firmware / Coding" 
-              desc="เขียนโค้ด C/C++ ควบคุมไมโครคอนโทรลเลอร์"
-            />
-            <RoleCard 
-              icon={<Zap className="w-8 h-8 text-purple-400" />} 
-              title="Cloud & Dashboard" 
-              desc="เชื่อมต่อเน็ตเวิร์คและสร้างหน้าจอควบคุมบนมือถือ"
-            />
-            <RoleCard 
-              icon={<ShieldCheck className="w-8 h-8 text-amber-400" />} 
-              title="Presenter" 
-              desc="สรุปผลงานและนำเสนอในรอบ Pitch & Live Demo"
-            />
-          </div>
+        
+        {/* Team Members */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-md">
+          <h3 className="text-xl font-bold mb-6 flex items-center"><Activity className="w-6 h-6 mr-3 text-blue-400" /> Team Members</h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6">
+            {teamMembers.map((member, idx) => (
+              <li key={member.id} className={`text-sm md:text-base flex items-center ${member.id === student.id ? 'text-white font-bold bg-white/10 px-3 py-1.5 rounded-lg -ml-3' : 'text-white/60'}`}>
+                <span className="opacity-50 mr-2 w-5 text-right">{idx + 1}.</span> {member.name}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </motion.div>
-  );
-}
-
-function RoleCard({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
-  return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors backdrop-blur-sm group">
-      <div className="mb-4 p-3 bg-white/5 inline-block rounded-xl border border-white/5 group-hover:scale-110 transition-transform">
-        {icon}
-      </div>
-      <h4 className="text-xl font-bold mb-2">{title}</h4>
-      <p className="text-sm text-white/50 leading-relaxed">{desc}</p>
-    </div>
   );
 }
 
@@ -333,15 +293,12 @@ function AllTeamsSection({ onBack }: { onBack: () => void }) {
 
 function TimelineSection({ onBack }: { onBack: () => void }) {
   const timeline = [
-    { time: "08:00", event: "OPENING" },
-    { time: "08:15", event: "TEAM & INTRODUCTION" },
-    { time: "08:30", event: "IoT FUNDAMENTALS" },
-    { time: "09:50", event: "BREAK" },
-    { time: "10:00", event: "CHALLENGE BRIEF" },
-    { time: "10:10", event: "BUILD YOUR IoT" },
-    { time: "11:10", event: "PITCH & LIVE DEMO" },
-    { time: "11:40", event: "AWARDS & CLOSING" },
-    { time: "12:00", event: "MISSION COMPLETE" }
+    { time: "09:00", event: "พิธีเปิดและชี้แจงกิจกรรม" },
+    { time: "09:15", event: "เข้าประจำกลุ่ม และรับมอบอุปกรณ์" },
+    { time: "09:35", event: "ปูพื้นฐานและทดลองใช้งานอุปกรณ์" },
+    { time: "10:30", event: "พักรับประทานอาหารว่าง" },
+    { time: "10:40", event: "ปฏิบัติการพัฒนาโครงงาน IoT" },
+    { time: "11:45", event: "สรุปผลการเรียนรู้ และปิดกิจกรรม" }
   ];
 
   return (
