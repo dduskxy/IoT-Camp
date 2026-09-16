@@ -12,11 +12,13 @@ export const ARDUINO_PINS = [
 export function ArduinoUno({
   onPinClick,
   selectedPin,
-  activeConnections = {}
+  activeConnections = {},
+  pinColors = {}
 }: {
   onPinClick?: (pin: string) => void;
   selectedPin?: string | null;
   activeConnections?: Record<string, string>;
+  pinColors?: Record<string, string>;
 }) {
   const topPins = ["D13", "D12", "D11", "D10", "D9", "D8", "D7", "D6", "D5", "D4", "D3", "D2", "TX", "RX"];
   const bottomPins = ["3.3V", "5V", "GND", "GND", "VIN", "A0", "A1", "A2", "A3", "A4", "A5"];
@@ -24,6 +26,7 @@ export function ArduinoUno({
   const renderPin = (pin: string) => {
     const isSelected = selectedPin === pin;
     const isConnected = Object.values(activeConnections).includes(pin) || Object.keys(activeConnections).includes(pin);
+    const customColorClass = pinColors[pin];
 
     return (
       <div key={pin} className="flex flex-col items-center gap-1 group" onClick={() => onPinClick?.(pin)}>
@@ -34,6 +37,7 @@ export function ArduinoUno({
           whileHover={{ scale: 1.2 }}
           className={`w-4 h-4 rounded-full border-2 cursor-pointer transition-colors relative flex items-center justify-center
             ${isSelected ? 'bg-blue-400 border-white shadow-[0_0_10px_#60a5fa]' :
+              customColorClass ? customColorClass :
               isConnected ? 'bg-green-500 border-green-300' : 'bg-black/60 border-gray-500 hover:border-white'}`}
           id={`pin-arduino-${pin}`}
         >

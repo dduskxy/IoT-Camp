@@ -7,11 +7,13 @@ export const NRF_PINS = ["GND", "VCC", "CE", "CSN", "SCK", "MOSI", "MISO", "IRQ"
 export function NRF24L01({
   onPinClick,
   selectedPin,
-  activeConnections = {}
+  activeConnections = {},
+  pinColors = {}
 }: {
   onPinClick?: (pin: string) => void;
   selectedPin?: string | null;
   activeConnections?: Record<string, string>;
+  pinColors?: Record<string, string>;
 }) {
   // NRF24L01 has a 2x4 pin header
   // Looking from top (antenna on top):
@@ -23,6 +25,7 @@ export function NRF24L01({
   const renderPin = (pin: string) => {
     const isSelected = selectedPin === pin;
     const isConnected = Object.values(activeConnections).includes(pin) || Object.keys(activeConnections).includes(pin);
+    const customColorClass = pinColors[pin];
 
     return (
       <div key={pin} className="flex flex-col items-center gap-1 group" onClick={() => onPinClick?.(pin)}>
@@ -30,6 +33,7 @@ export function NRF24L01({
           whileHover={{ scale: 1.2 }}
           className={`w-5 h-5 rounded-sm border-[2px] cursor-pointer transition-colors relative flex items-center justify-center
             ${isSelected ? 'bg-purple-500 border-white shadow-[0_0_15px_#a855f7] z-10' :
+              customColorClass ? customColorClass :
               isConnected ? 'bg-green-500 border-green-300' : 'bg-[#C0A040] border-[#8A7330] hover:border-white'}`}
           id={`pin-nrf-${pin}`}
         >

@@ -80,13 +80,27 @@ export function WiringSingleSlide() {
     pin => connections[pin] === TARGET_WIRING[pin]
   );
 
+  // Compute dynamic colors for pins
+  const nrfPinColors: Record<string, string> = {};
+  const arduinoPinColors: Record<string, string> = {};
+  
+  Object.entries(connections).forEach(([nrfPin, arduinoPin]) => {
+    if (TARGET_WIRING[nrfPin] === arduinoPin) {
+      nrfPinColors[nrfPin] = WIRE_COLORS[nrfPin];
+      arduinoPinColors[arduinoPin] = WIRE_COLORS[nrfPin];
+    } else {
+      nrfPinColors[nrfPin] = 'bg-rose-500 border-rose-300 shadow-[0_0_15px_#f43f5e] animate-pulse';
+      arduinoPinColors[arduinoPin] = 'bg-rose-500 border-rose-300 shadow-[0_0_15px_#f43f5e] animate-pulse';
+    }
+  });
+
   return (
     <div className="w-full h-full flex flex-col bg-transparent text-white font-sans">
       <div className="text-center mb-4">
         <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-          คู่มือต่อสายไฟ: Arduino + NRF24L01
+          จำลองการต่อสาย: Arduino + NRF24L01
         </h2>
-        <p className="text-gray-400 mt-1 text-sm md:text-base">ทำตามคำแนะนำทีละขั้นตอน เพื่อป้องกันอุปกรณ์เสียหาย</p>
+        <p className="text-gray-400 mt-1 text-sm md:text-base">ทำตามคำแนะนำทีละขั้นตอน เพื่อป้องกันอุปกรณ์พัง</p>
       </div>
 
       {/* Guided Step Banner */}
@@ -128,8 +142,8 @@ export function WiringSingleSlide() {
         >
           <CheckCircle2 className="w-10 h-10 text-emerald-400" />
           <div>
-            <h3 className="font-bold text-xl text-emerald-300">ประกอบร่างเสร็จสมบูรณ์!</h3>
-            <p className="text-sm text-emerald-100">ตรวจสอบความเรียบร้อย แล้วไปเรียนรู้โค้ดกันต่อเลย</p>
+            <h3 className="font-bold text-xl text-emerald-300">ประกอบร่างสมบูรณ์!</h3>
+            <p className="text-sm text-emerald-100">ตรวจสอบความเรียบร้อย แล้วไปเรียนโค้ดกันต่อเลย</p>
           </div>
         </motion.div>
       )}
@@ -144,6 +158,7 @@ export function WiringSingleSlide() {
               onPinClick={handleNrfClick}
               selectedPin={selectedNrfPin}
               activeConnections={connections}
+              pinColors={nrfPinColors}
             />
           </div>
 
@@ -158,6 +173,7 @@ export function WiringSingleSlide() {
               onPinClick={handleCtrlClick}
               selectedPin={null}
               activeConnections={Object.entries(connections).reduce((acc, [k, v]) => ({...acc, [v]: k}), {})}
+              pinColors={arduinoPinColors}
             />
           </div>
         </div>
@@ -175,10 +191,10 @@ export function WiringSingleSlide() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
                     className={`flex items-center gap-2 p-2 rounded-lg border ${
-                      isCorrect ? 'bg-emerald-900/30 border-emerald-500/30' : 'bg-red-900/30 border-red-500/30'
+                      isCorrect ? 'bg-emerald-900/30 border-emerald-500/30' : 'bg-rose-900/40 border-rose-500/50'
                     }`}
                   >
-                    <div className={`w-3 h-3 rounded-full border ${WIRE_COLORS[nrfPin] || 'bg-white'}`}></div>
+                    <div className={`w-3 h-3 rounded-full border ${isCorrect ? (WIRE_COLORS[nrfPin] || 'bg-white') : 'bg-rose-500 border-rose-400 animate-pulse'}`}></div>
                     <span className="font-mono font-bold text-sm">{nrfPin}</span>
                     <span className="text-xs text-gray-500">→</span>
                     <span className="font-mono font-bold text-sm text-blue-300">{ctrlPin}</span>
