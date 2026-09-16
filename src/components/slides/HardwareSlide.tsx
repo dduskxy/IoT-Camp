@@ -4,13 +4,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Cpu, Layers, Radio, Split, Lightbulb, Monitor, Usb, Info } from "lucide-react";
 
 const EQUIPMENTS = [
-  { id: 1, name: "Arduino Uno", icon: Cpu, imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/38/Arduino_Uno_-_R3.jpg", function: "สมองกล", detail: "ทำหน้าที่ประมวลผลคำสั่งที่รับมา อ่านค่าจากเซ็นเซอร์ และควบคุมอุปกรณ์" },
-  { id: 2, name: "Grove Base Shield", icon: Layers, imageUrl: "https://raw.githubusercontent.com/SeeedDocument/Base_Shield_V2/master/img/Base_shield_v2.1.jpg", function: "บอร์ดขยายพอร์ต", detail: "สวมทับ Arduino เพื่อให้ง่ายต่อการต่ออุปกรณ์ Grove โดยไม่ต้องใช้สายโยง" },
-  { id: 3, name: "NRF24L01", icon: Radio, imageUrl: "https://upload.wikimedia.org/wikipedia/commons/1/15/NRF24L01.jpg", function: "โมดูลสื่อสาร", detail: "ใช้รับส่งสัญญาณวิทยุความถี่ 2.4GHz ให้ Arduino สื่อสารกันได้ระยะไกล" },
-  { id: 4, name: "สายจัมเปอร์ (Jumper)", icon: Split, imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/73/Jumper_Wires_-_Male_to_Male.jpg", function: "สายเชื่อมต่อ", detail: "เชื่อมต่อสัญญาณไฟฟ้าระหว่างโมดูลไร้สายกับบอร์ด" },
-  { id: 5, name: "Grove RGB LED", icon: Lightbulb, imageUrl: "https://raw.githubusercontent.com/SeeedDocument/Grove-Chainable_RGB_LED/master/img/Grove-Chainable_RGB_LED_V2.0.jpg", function: "หลอดไฟเปลี่ยนสี", detail: "หลอดไฟ LED ที่ผสมสี RGB และต่อกันแบบลูกโซ่ (Chainable) ได้" },
-  { id: 6, name: "Computer", icon: Monitor, imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800", function: "เครื่องเขียนอัปโหลด", detail: "ใช้สำหรับเขียนโค้ด อัปโหลดลงบอร์ด และเปิดหน้าเว็บ AI ดูการนับนิ้ว" },
-  { id: 7, name: "Serial/USB Cable", icon: Usb, imageUrl: "https://upload.wikimedia.org/wikipedia/commons/0/07/USB_Type-B_plug.jpg", function: "สายจ่ายไฟ/รับส่งข้อมูล", detail: "ใช้จ่ายไฟและรับส่งข้อมูล (Serial) ระหว่างคอมพิวเตอร์กับบอร์ด (หัวแบบ USB Type-B)" },
+  { id: 1, name: "Arduino Uno", icon: Cpu, imageUrl: "/images/hardware/arduino.jpg", function: "สมองกล", detail: "ทำหน้าที่ประมวลผลคำสั่งที่รับมา อ่านค่าจากเซ็นเซอร์ และควบคุมอุปกรณ์" },
+  { id: 2, name: "Grove Base Shield", icon: Layers, imageUrl: "/images/hardware/shield.jpg", function: "บอร์ดขยายพอร์ต", detail: "สวมทับ Arduino เพื่อให้ง่ายต่อการต่ออุปกรณ์ Grove โดยไม่ต้องใช้สายโยง" },
+  { id: 3, name: "NRF24L01", icon: Radio, imageUrl: "/images/hardware/nrf24.jpg", function: "โมดูลสื่อสาร", detail: "ใช้รับส่งสัญญาณวิทยุความถี่ 2.4GHz ให้ Arduino สื่อสารกันได้ระยะไกล" },
+  { id: 4, name: "สายจัมเปอร์ (Jumper)", icon: Split, imageUrl: "/images/hardware/jumper.jpg", function: "สายเชื่อมต่อ", detail: "เชื่อมต่อสัญญาณไฟฟ้าระหว่างโมดูลไร้สายกับบอร์ด" },
+  { id: 5, name: "Grove RGB LED", icon: Lightbulb, imageUrl: "/images/hardware/led.jpg", function: "หลอดไฟเปลี่ยนสี", detail: "หลอดไฟ LED ที่ผสมสี RGB และต่อกันแบบลูกโซ่ (Chainable) ได้" },
+  { id: 6, name: "Computer", icon: Monitor, imageUrl: "/images/hardware/computer.jpg", function: "เครื่องเขียนอัปโหลด", detail: "ใช้สำหรับเขียนโค้ด อัปโหลดลงบอร์ด และเปิดหน้าเว็บ AI ดูการนับนิ้ว" },
+  { id: 7, name: "Serial/USB Cable", icon: Usb, imageUrl: "/images/hardware/cable.jpg", function: "สายจ่ายไฟ/รับส่งข้อมูล", detail: "ใช้จ่ายไฟและรับส่งข้อมูล (Serial) ระหว่างคอมพิวเตอร์กับบอร์ด (หัวแบบ USB Type-B)" },
 ];
 
 export function HardwareSlide() {
@@ -73,7 +73,7 @@ export function HardwareSlide() {
               <img 
                 src={selectedEq.imageUrl} 
                 alt={selectedEq.name}
-                className="w-full h-full object-contain opacity-100 transition-opacity p-4"
+                className="w-full h-full object-contain opacity-100 transition-opacity p-4 rounded-xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
               
