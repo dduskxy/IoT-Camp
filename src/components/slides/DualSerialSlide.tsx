@@ -19,13 +19,13 @@ export function DualSerialSlide() {
       const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now.getMilliseconds().toString().padStart(3, '0')}`;
       
       const newId = Date.now();
-      const msg = `Sensor Data: ${Math.floor(Math.random() * 100)}`;
+      const msg = `Finger Count: ${Math.floor(Math.random() * 6)}`;
       
-      setTxLogs(prev => [...prev.slice(-7), { id: newId, time: timeStr, message: `Sending [${msg}]` }]);
+      setTxLogs(prev => [...prev.slice(-7), { id: newId, time: timeStr, message: `Broadcast [${msg}]` }]);
       
       // Delay RX by a slight amount to simulate latency
       setTimeout(() => {
-        setRxLogs(prev => [...prev.slice(-7), { id: newId + 1, time: timeStr, message: `Received [${msg}]` }]);
+        setRxLogs(prev => [...prev.slice(-7), { id: newId + 1, time: timeStr, message: `Received [${msg}] & Applied LED Color` }]);
       }, 300);
 
     }, 1500);

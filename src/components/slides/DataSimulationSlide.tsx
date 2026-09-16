@@ -27,7 +27,7 @@ export function DataSimulationSlide() {
         
         setTxCount((prev) => {
           const next = prev + 1;
-          setLogs(l => [...l.slice(-4), { id: Date.now(), time: tStr, msg: `TX sent packet #${next} [Hello IoT]`, type: 'tx' }]);
+          setLogs(l => [...l.slice(-4), { id: Date.now(), time: tStr, msg: `TX broadcasted count: [${(next % 5) + 1}]`, type: 'tx' }]);
           return next;
         });
         setIsTransmitting(true);
@@ -38,7 +38,7 @@ export function DataSimulationSlide() {
           
           setRxCount((prev) => {
             const next = prev + 1;
-            setLogs(l => [...l.slice(-4), { id: Date.now()+1, time: rtStr, msg: `RX received packet #${next}`, type: 'rx' }]);
+            setLogs(l => [...l.slice(-4), { id: Date.now()+1, time: rtStr, msg: `RX received count & changed LED to [${(next % 5) + 1}]`, type: 'rx' }]);
             return next;
           });
           setIsTransmitting(false);
@@ -107,7 +107,7 @@ export function DataSimulationSlide() {
                 >
                   <div className="bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.8)] border border-white/40 flex items-center gap-2 whitespace-nowrap">
                     <Wifi size={14} className="animate-pulse text-white" />
-                    <span className="font-mono font-bold text-white text-sm">"Hello IoT"</span>
+                    <span className="font-mono font-bold text-white text-sm">"Fingers: 2"</span>
                   </div>
                   <div className="text-[10px] text-cyan-300 font-mono mt-2 bg-black/50 px-2 py-1 rounded">01001000 01100101</div>
                 </motion.div>
@@ -168,7 +168,7 @@ export function DataSimulationSlide() {
           <div className="hidden md:flex bg-black/60 border border-white/10 rounded-lg p-3 w-1/3 text-xs text-gray-400 flex-col gap-2">
             <div className="flex justify-between border-b border-white/5 pb-1"><span>Frequency</span> <span className="text-white">2.400 GHz</span></div>
             <div className="flex justify-between border-b border-white/5 pb-1"><span>Data Rate</span> <span className="text-white">1 Mbps</span></div>
-            <div className="flex justify-between"><span>Payload Size</span> <span className="text-white">32 Bytes</span></div>
+            <div className="flex justify-between"><span>Payload Size</span> <span className="text-white">4 Bytes (Int)</span></div>
           </div>
         </div>
       </div>
