@@ -2,14 +2,14 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Circle, Target } from 'lucide-react';
+import { CheckCircle2, Circle, Target, Rocket } from 'lucide-react';
 
 const missions = [
-  { id: 1, title: 'Wiring', desc: 'ต่อวงจร NRF24L01 กับบอร์ด Arduino ให้ถูกต้อง' },
-  { id: 2, title: 'TX Ready', desc: 'อัปโหลดโค้ดฝั่งส่ง (Transmitter) สำเร็จ' },
-  { id: 3, title: 'RX Ready', desc: 'อัปโหลดโค้ดฝั่งรับ (Receiver) สำเร็จ' },
-  { id: 4, title: 'TX/RX Comm', desc: 'ทดสอบการส่งข้อมูลและรับข้อมูลผ่าน Serial Monitor' },
-  { id: 5, title: 'Troubleshooting', desc: 'สามารถแก้ปัญหาเบื้องต้นได้ (ถ้ามี)' }
+  { id: 1, title: 'Power Check (สำคัญมาก)', desc: 'ตรวจสอบสาย VCC ว่าต่อเข้า 3.3V แล้ว (ไม่ได้เผลอเสียบ 5V)' },
+  { id: 2, title: 'Ground Check', desc: 'ตรวจสอบสาย GND ว่าต่อแน่นสนิท ไม่หลวม' },
+  { id: 3, title: 'SPI Bus Check', desc: 'ตรวจสอบสาย MOSI (D11), MISO (D12), SCK (D13) ว่าไม่สลับเส้นกัน' },
+  { id: 4, title: 'Control Check', desc: 'ตรวจสอบสาย CE (D9) และ CSN (D10) ว่าต่อตรงตามที่ระบุในโค้ด' },
+  { id: 5, title: 'USB Connection', desc: 'เสียบสาย USB เข้าคอมพิวเตอร์ และเลือกพอร์ต (COM Port) ใน Arduino IDE ให้ถูกต้อง' }
 ];
 
 export function MissionsSlide() {
@@ -27,19 +27,19 @@ export function MissionsSlide() {
         <motion.div 
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="inline-flex items-center justify-center p-4 bg-green-500/20 rounded-full mb-6 shadow-[0_0_30px_rgba(34,197,94,0.3)]"
+          className="inline-flex items-center justify-center p-4 bg-orange-500/20 rounded-full mb-4 shadow-[0_0_30px_rgba(249,115,22,0.3)]"
         >
-          <Target className="w-12 h-12 text-green-400" />
+          <Rocket className="w-12 h-12 text-orange-400" />
         </motion.div>
-        <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">
-          ภารกิจของคุณ (Missions)
+        <h2 className="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">
+          Pre-Flight Checklist 🚀
         </h2>
-        <p className="text-xl text-gray-300 mt-4">
-          ทำภารกิจเหล่านี้ให้สำเร็จเพื่อเป็นผู้เชี่ยวชาญ IoT!
+        <p className="text-base md:text-xl text-gray-300 mt-2">
+          ก่อนเสียบปลั๊กและอัปโหลดโค้ด ให้นักเรียนตรวจสอบลิสต์เหล่านี้กับบอร์ดจริงของตัวเอง!
         </p>
       </div>
 
-      <div className="w-full max-w-3xl space-y-4">
+      <div className="w-full max-w-3xl space-y-3">
         {missions.map((mission, index) => {
           const isDone = completed.includes(mission.id);
           return (
@@ -49,24 +49,24 @@ export function MissionsSlide() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: index * 0.1 }}
               onClick={() => toggleMission(mission.id)}
-              className={`flex items-center p-6 rounded-2xl cursor-pointer transition-all border ${
+              className={`flex items-center p-4 md:p-6 rounded-2xl cursor-pointer transition-all border ${
                 isDone 
-                  ? 'bg-green-500/10 border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.2)]' 
+                  ? 'bg-orange-500/10 border-orange-500/50 shadow-[0_0_20px_rgba(249,115,22,0.2)]' 
                   : 'bg-white/5 border-white/10 hover:bg-white/10'
               } backdrop-blur-md`}
             >
-              <div className="mr-6">
+              <div className="mr-4 md:mr-6 shrink-0">
                 {isDone ? (
-                  <CheckCircle2 className="w-8 h-8 text-green-400" />
+                  <CheckCircle2 className="w-6 h-6 md:w-8 md:h-8 text-orange-400" />
                 ) : (
-                  <Circle className="w-8 h-8 text-gray-500" />
+                  <Circle className="w-6 h-6 md:w-8 md:h-8 text-gray-500" />
                 )}
               </div>
               <div>
-                <h3 className={`text-2xl font-semibold ${isDone ? 'text-green-300 line-through opacity-70' : 'text-white'}`}>
+                <h3 className={`text-lg md:text-2xl font-semibold ${isDone ? 'text-orange-300 line-through opacity-70' : 'text-white'}`}>
                   {mission.title}
                 </h3>
-                <p className={`text-lg mt-1 ${isDone ? 'text-gray-400' : 'text-gray-300'}`}>
+                <p className={`text-sm md:text-lg mt-1 ${isDone ? 'text-gray-400' : 'text-gray-300'}`}>
                   {mission.desc}
                 </p>
               </div>
@@ -75,8 +75,9 @@ export function MissionsSlide() {
         })}
       </div>
 
-      <div className="mt-8 text-xl font-mono text-emerald-400">
-        Progress: {completed.length} / {missions.length}
+      <div className="mt-6 text-lg md:text-xl font-mono text-orange-400">
+        ความพร้อม: {completed.length} / {missions.length} 
+        {completed.length === missions.length && " (พร้อมลุย!)"}
       </div>
     </div>
   );
