@@ -6,275 +6,29 @@ import { ArduinoUno } from '../hardware/ArduinoUno';
 import { NRF24L01 } from '../hardware/NRF24L01';
 
 const TX_CODE_SECTIONS = [
-  { id: 'libs', title: '1. Config & Libraries', code: `/*
- * sketch.ino
- * 
- * Master Hand Gesture RGB LED Controller (Grove Chainable RGB LED / P9813)
- * with NRF24L01 Wireless Multi-Receiver Broadcast Integration (1 Transmitter ➔ 3 Receivers)
- * Controlled via Web Serial API & MediaPipe Hands (0 - 10 Fingers)
- * 
- * Hardware Connections:
- *   [Grove Chainable RGB LED - P9813]
- *   - VCC  -> Arduino 5V
- *   - GND  -> Arduino GND
- *   - CLK  -> Arduino Pin D2
- *   - DATA -> Arduino Pin D3
- * 
- *   [NRF24L01 Wireless Transceiver Module]
- *   - VCC  -> Arduino 3.3V (⚠️ ห้ามต่อ 5V เด็ดขาด! แนะนำต่อตัวเก็บประจุ 10uF-100uF คร่อม VCC/GND เพื่อความเสถียร)
- *   - GND  -> Arduino GND
- *   - CE   -> Arduino Pin D9
- *   - CSN  -> Arduino Pin D10
- *   - SCK  -> Arduino Pin D13 (Hardware SPI)
- *   - MOSI -> Arduino Pin D11 (Hardware SPI)
- *   - MISO -> Arduino Pin D12 (Hardware SPI)
- *   - IRQ  -> ไม่ได้ใช้งาน (Unused)
- * 
- * Gesture / Finger Count Color Mapping (0 - 10 Fingers):
- *   - 0 Fingers (or no hand) -> LED OFF (0, 0, 0)
- *   - 1 Finger               -> Red     (255, 0, 0)
- *   - 2 Fingers              -> Green   (0, 255, 0)
- *   - 3 Fingers              -> Blue    (0, 0, 255)
- *   - 4 Fingers              -> Yellow  (255, 255, 0)
- *   - 5 Fingers              -> Purple  (180, 0, 255)
- *   - 6 Fingers              -> Cyan    (0, 255, 255)
- *   - 7 Fingers              -> Orange  (255, 128, 0)
- *   - 8 Fingers              -> Pink    (255, 20, 147)
- *   - 9 Fingers              -> Lime    (128, 255, 0)
- *   - 10 Fingers             -> White   (255, 255, 255)
- * 
- * Broadcast Architecture (1 Transmitter ➔ 3 Receivers):
- *   - AutoAck is disabled (radio.setAutoAck(false)) so the transmitter broadcasts to
- *     all 3 receivers without conflicting ACK packet collisions.
- *   - Redundant transmission (3 pulses) + 1.5s periodic Heartbeat ensures 100% sync reliability.
- */
-
-#include <SPI.h>
-#include <nRF24L01.h>
-#include <RF24.h>
-#include <printf.h> // สำหรับแสดงค่ารีจิสเตอร์ของ NRF24
-
-// Pin definitions สำหรับ NRF24L01
-#define CE_PIN   9
-#define CSN_PIN  10
-
-RF24 radio(CE_PIN, CSN_PIN);
-
-// Address pipe & Channel สำหรับ NRF24L01
+  { id: 'init', title: '1. Init & Channel', code: `RF24 radio(9, 10); // CE, CSN
 const byte rfAddress[6] = "00001";
-const uint8_t rfChannel = 76; // Channel 76 (2476 MHz)
-
-// Pin definitions สำหรับ Grove Chainable LED (P9813)
-const int clkPin  = 2; // Pin D2 connected to CLK
-const int dataPin = 3; // Pin D3 connected to DATA
-
-// Global State
-int currentCount = 0;
-unsigned long lastHeartbeatTime = 0;
-
-// Bit-bang sending a single 8-bit byte to P9813
-void sendByte(uint8_t b) {
-  for (int i = 7; i >= 0; i--) {
-    digitalWrite(dataPin, (b >> i) & 0x01);
-    digitalWrite(clkPin, LOW);
-    digitalWrite(clkPin, HIGH);
+const uint8_t rfChannel = 76;`, explanation: 'กำหนดขาเชื่อมต่อ NRF24L01, ชื่อท่อ (Address) และตั้งช่องสัญญาณ (Channel 76) ให้ตรงกันทั้งหมด' },
+  { id: 'setup', title: '2. Broadcast Setup', code: `radio.begin();
+radio.setAutoAck(false); // ปิด Auto-ACK
+radio.setChannel(rfChannel);
+radio.openWritingPipe(rfAddress);
+radio.stopListening(); // เป็นตัวส่ง`, explanation: 'ปิดโหมด Auto-ACK เพื่อส่งข้อมูลแบบกระจาย (Broadcast) ให้หลายบอร์ดรับพร้อมกันโดยสัญญาณไม่ชนกัน' },
+  { id: 'read', title: '3. Read Input', code: `// ย่อส่วนรับค่าจากหน้าเว็บ
+void processCommand(String cmd) {
+  int count = cmd.toInt();
+  if (count >= 0 && count <= 10) {
+    currentCount = count;
+    broadcastFingerCount(currentCount);
   }
-}
-
-// Set RGB LED color using P9813 transmission protocol
-void setColor(uint8_t r, uint8_t g, uint8_t b) {
-  // 1. Send 32-bit Start Frame (32 zeroes)
-  for (int i = 0; i < 4; i++) {
-    sendByte(0x00);
-  }
-
-  // 2. Calculate checksum / flag byte according to P9813 specification:
-  //    Format: 1 1 ~B7 ~B6 ~G7 ~G6 ~R7 ~R6
-  uint8_t checksum = 0xC0; // Prefix bits 11000000
-  checksum |= ((~b >> 6) & 0x03) << 4;
-  checksum |= ((~g >> 6) & 0x03) << 2;
-  checksum |= ((~r >> 6) & 0x03);
-
-  // 3. Send Flag and Color bytes in order: Checksum -> Blue -> Green -> Red
-  sendByte(checksum);
-  sendByte(b);
-  sendByte(g);
-  sendByte(r);
-
-  // 4. Send 32-bit End Frame (32 zeroes)
-  for (int i = 0; i < 4; i++) {
-    sendByte(0x00);
-  }
-}
-
-// Helper to apply colors based on finger count command (0 to 10)
-void applyFingerColor(int count) {
-  switch (count) {
-    case 0:
-      setColor(0, 0, 0); // Off
-      Serial.println(F("ACK: 0 Fingers -> LED OFF"));
-      break;
-    case 1:
-      setColor(255, 0, 0); // Red
-      Serial.println(F("ACK: 1 Finger -> RED (255, 0, 0)"));
-      break;
-    case 2:
-      setColor(0, 255, 0); // Green
-      Serial.println(F("ACK: 2 Fingers -> GREEN (0, 255, 0)"));
-      break;
-    case 3:
-      setColor(0, 0, 255); // Blue
-      Serial.println(F("ACK: 3 Fingers -> BLUE (0, 0, 255)"));
-      break;
-    case 4:
-      setColor(255, 255, 0); // Yellow
-      Serial.println(F("ACK: 4 Fingers -> YELLOW (255, 255, 0)"));
-      break;
-    case 5:
-      setColor(180, 0, 255); // Purple / Violet
-      Serial.println(F("ACK: 5 Fingers -> PURPLE (180, 0, 255)"));
-      break;
-    case 6:
-      setColor(0, 255, 255); // Cyan
-      Serial.println(F("ACK: 6 Fingers -> CYAN (0, 255, 255)"));
-      break;
-    case 7:
-      setColor(255, 128, 0); // Orange
-      Serial.println(F("ACK: 7 Fingers -> ORANGE (255, 128, 0)"));
-      break;
-    case 8:
-      setColor(255, 20, 147); // Pink
-      Serial.println(F("ACK: 8 Fingers -> PINK (255, 20, 147)"));
-      break;
-    case 9:
-      setColor(128, 255, 0); // Lime
-      Serial.println(F("ACK: 9 Fingers -> LIME (128, 255, 0)"));
-      break;
-    case 10:
-      setColor(255, 255, 255); // White
-      Serial.println(F("ACK: 10 Fingers -> WHITE (255, 255, 255)"));
-      break;
-    default:
-      // Ignore unknown values
-      break;
-  }
-}
-
-// Broadcast finger count to all 3 receiver boards
-void broadcastFingerCount(int count) {
-  // ส่งซ้ำ 3 ครั้งพร้อมดีเลย์สั้นๆ เพื่อความแน่นอนในโหมด Broadcast (No-ACK)
+}`, explanation: 'อ่านคำสั่งตัวเลข 0-10 จากเว็บ (Web Serial) เพื่อจำจำนวนนิ้ว แล้วอัปเดตสีไฟ LED ก่อนกระจายข้อมูลต่อ' },
+  { id: 'loop', title: '4. Broadcast Loop', code: `void broadcastFingerCount(int count) {
+  // ส่งซ้ำ 3 ครั้งเพื่อความชัวร์ (Broadcast ไม่มี ACK)
   for (int i = 0; i < 3; i++) {
     radio.write(&count, sizeof(count));
     delay(2);
   }
-}
-
-// Process command string (e.g. "0" - "10", or single chars 'A'/'a' for 10)
-String rxBuffer = "";
-unsigned long lastRxTime = 0;
-
-void processCommand(String cmd) {
-  cmd.trim();
-  if (cmd.length() == 0) return;
-
-  // Handle Sync inquiry
-  if (cmd == "SYNC?" || cmd == "?") {
-    Serial.print(F("SYNC:"));
-    Serial.println(currentCount);
-    return;
-  }
-
-  int count = -1;
-  if (cmd == "10" || cmd == "A" || cmd == "a") {
-    count = 10;
-  } else if (cmd.length() == 1 && cmd[0] >= '0' && cmd[0] <= '9') {
-    count = cmd[0] - '0';
-  }
-
-  if (count >= 0 && count <= 10) {
-    currentCount = count;
-
-    // 1. ปรับสีหลอดไฟ LED ที่บอร์ดส่งนี้
-    applyFingerColor(currentCount);
-
-    // 2. ส่งข้อมูลจำนวนนิ้วผ่าน NRF24L01 แบบ Broadcast ไปยังเครื่องรับทั้ง 3 เครื่อง
-    broadcastFingerCount(currentCount);
-
-    Serial.print(F("RF24_BROADCAST: Sent finger count ["));
-    Serial.print(currentCount);
-    Serial.println(F("] -> Broadcasted to 3 Receivers"));
-    lastHeartbeatTime = millis();
-  }
-}`, explanation: 'ตั้งค่าไลบรารีและประกาศตัวแปรที่จำเป็นสำหรับ NRF24L01 และ P9813 LED' },
-  { id: 'setup', title: '2. Setup', code: `void setup() {
-// Initialize Serial communication (115200 baud)
-  Serial.begin(115200);
-  while (!Serial && millis() < 3000) {}
-
-  // Initialize P9813 GPIO control pins
-  pinMode(clkPin, OUTPUT);
-  pinMode(dataPin, OUTPUT);
-  digitalWrite(clkPin, LOW);
-  digitalWrite(dataPin, LOW);
-
-  // Start with LED turned off
-  setColor(0, 0, 0);
-
-  // Initialize printf for NRF24 details
-  printf_begin();
-  Serial.println(F("========================================"));
-  Serial.println(F("Testing Master Transmitter NRF24L01..."));
-
-  if (!radio.begin()) {
-    Serial.println(F("ERROR: NRF24L01 hardware not responding!"));
-    Serial.println(F("Please check wiring: CE->9, CSN->10, SCK->13, MOSI->11, MISO->12, VCC->3.3V, GND->GND"));
-    while (1) {} // หยุดทำงานหากหาโมดูลไม่เจอ
-  }
-
-  Serial.println(F("SUCCESS: NRF24L01 found on Master Transmitter!"));
-  radio.printPrettyDetails(); // พิมพ์สถานะ config ของชิป
-  Serial.println(F("========================================"));
-
-  // RF24 configuration for 1-to-3 Broadcast
-  radio.setAutoAck(false);      // ปิด Auto-ACK ป้องกันการชนกันของสัญญาณจาก 3 เครื่องรับ
-  radio.setChannel(rfChannel);  // ล็อคช่องสัญญาณ 76 ให้ตรงกันทุกเครื่อง
-  radio.openWritingPipe(rfAddress);
-  radio.setPALevel(RF24_PA_LOW); // PA_LOW เพื่อความเสถียรของไฟเลี้ยงบน Arduino
-  radio.setDataRate(RF24_1MBPS);
-  radio.stopListening();         // เป็นตัวส่ง (Transmitter Mode)
-
-  Serial.println(F("MASTER_READY: Broadcast Transmitter Active (115200 baud)."));
-}`, explanation: 'เริ่มต้นการทำงานของ Serial, LED และตั้งค่า NRF24L01 เป็นโหมดส่ง (Transmitter)' },
-  { id: 'loop', title: '3. Loop', code: `void loop() {
-// 1. ตรวจสอบคำสั่งที่ส่งมาจาก Web Serial interface
-  while (Serial.available() > 0) {
-    char c = Serial.read();
-    lastRxTime = millis();
-
-    if (c == '\n' || c == '\r') {
-      if (rxBuffer.length() > 0) {
-        processCommand(rxBuffer);
-        rxBuffer = "";
-      }
-    } else {
-      if (rxBuffer.length() < 8) {
-        rxBuffer += c;
-      }
-    }
-  }
-
-  // Fallback for commands sent without newline (e.g. timeout after 40ms)
-  if (rxBuffer.length() > 0 && (millis() - lastRxTime > 40)) {
-    processCommand(rxBuffer);
-    rxBuffer = "";
-  }
-
-  // 2. Heartbeat Broadcast ทุกๆ 1.5 วินาที เพื่อให้เครื่องรับที่เพิ่งเปิดสวิตช์ซิงก์สีตามได้ทันที
-  if (millis() - lastHeartbeatTime >= 1500) {
-    lastHeartbeatTime = millis();
-    radio.write(&currentCount, sizeof(currentCount));
-  }
-}`, explanation: 'รับคำสั่งจาก Web Serial, เปลี่ยนสี LED และ Broadcast ค่าไปยังเครื่องรับ' }
+}`, explanation: 'ส่งตัวเลขจำนวนนิ้วซ้ำ 3 ครั้งด้วยความเร็วสูง เพื่อให้มั่นใจว่าข้อมูลกระจายถึงผู้รับทุกบอร์ดครบถ้วน' }
 ];
 
 const WIRE_COLORS: Record<string, string> = {
