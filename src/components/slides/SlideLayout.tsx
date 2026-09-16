@@ -18,6 +18,7 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
   const slide = workshopSlides.find((s) => s.id === currentStep);
   const totalSlides = workshopSlides.length;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isNavVisible, setIsNavVisible] = useState(true);
 
   const handlePrevious = () => {
     if (currentStep > 1) {
@@ -39,6 +40,38 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentStep]);
+
+  // Auto-hide navigation logic
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    const wakeUpNav = () => {
+      setIsNavVisible(true);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsNavVisible(false);
+      }, 2500); // Hide after 2.5 seconds of inactivity
+    };
+
+    // Listeners for waking up the nav
+    window.addEventListener("mousemove", wakeUpNav);
+    window.addEventListener("touchstart", wakeUpNav);
+    window.addEventListener("scroll", wakeUpNav, { passive: true });
+    window.addEventListener("click", wakeUpNav);
+
+    // Initial timeout
+    timeoutId = setTimeout(() => {
+      setIsNavVisible(false);
+    }, 2500);
+
+    return () => {
+      window.removeEventListener("mousemove", wakeUpNav);
+      window.removeEventListener("touchstart", wakeUpNav);
+      window.removeEventListener("scroll", wakeUpNav);
+      window.removeEventListener("click", wakeUpNav);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   if (!slide) return null;
 
@@ -98,7 +131,7 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
           </div>
 
           <div>
-            <Button variant="ghost" size="icon" className="hover:bg-white/10 text-slate-300 hover:text-white rounded-full w-10 h-10" onClick={() => setMenuOpen(!menuOpen)}>
+            <Button variant="ghost" size="icon" className="hover:bg-white/10 text-slate-300 hover:text-white rounded-full w-10 h-10 cursor-pointer pointer-events-auto" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
           </div>
@@ -186,42 +219,50 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
         </AnimatePresence>
       </main>
 
-      {/* Floating Bottom Navigation */}
-      <div className="fixed bottom-8 inset-x-0 flex justify-center pointer-events-none z-30 px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-[#030303]/80 backdrop-blur-2xl rounded-full p-2 flex items-center gap-3 pointer-events-auto shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/10"
-        >
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handlePrevious}
-            disabled={currentStep === 1}
-            className="rounded-full text-slate-400 hover:bg-white/10 hover:text-white disabled:opacity-20 disabled:hover:bg-transparent h-14 w-14 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          
-          <div className="px-4 text-slate-300 font-bold text-sm tracking-widest flex items-center gap-2">
-            <span className="text-white">{currentStep}</span>
-            <span className="text-slate-600">/</span>
-            <span>{totalSlides}</span>
-          </div>
+      {/* Floating Bottom Navigation (Auto-hides) */}
+      <div 
+        className="fixed bottom-8 inset-x-0 flex justify-center pointer-events-none z-30 px-4"
+        onMouseEnter={() => setIsNavVisible(true)}
+      >
+        <AnimatePresence>
+          {isNavVisible && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.9 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-[#030303]/80 backdrop-blur-2xl rounded-full p-2 flex items-center gap-3 pointer-events-auto shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/10"
+            >
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handlePrevious}
+                disabled={currentStep === 1}
+                className="rounded-full text-slate-400 hover:bg-white/10 hover:text-white disabled:opacity-20 disabled:hover:bg-transparent h-14 w-14 transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </Button>
+              
+              <div className="px-4 text-slate-300 font-bold text-sm tracking-widest flex items-center gap-2">
+                <span className="text-white">{currentStep}</span>
+                <span className="text-slate-600">/</span>
+                <span>{totalSlides}</span>
+              </div>
 
-          <Button
-            onClick={handleNext}
-            disabled={currentStep === totalSlides}
-            className="rounded-full bg-white text-black hover:bg-slate-200 hover:scale-105 active:scale-95 h-14 w-14 p-0 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300 border-none"
-          >
-            <ArrowRight className="w-5 h-5" />
-          </Button>
-        </motion.div>
+              <Button
+                onClick={handleNext}
+                disabled={currentStep === totalSlides}
+                className="rounded-full bg-white text-black hover:bg-slate-200 hover:scale-105 active:scale-95 h-14 w-14 p-0 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300 border-none cursor-pointer"
+              >
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       
       {/* Padding for bottom nav */}
-      <div className="h-28 shrink-0"></div>
+      <div className="h-12 shrink-0"></div>
     </div>
   );
 }
