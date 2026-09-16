@@ -1,102 +1,176 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Play, Pause, RefreshCw, Send, Radio, Download } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Play, Pause, RefreshCw, Send, Radio, Download, Activity, Cpu, Wifi } from 'lucide-react';
+
+interface LogEntry {
+  id: number;
+  time: string;
+  msg: string;
+  type: 'tx' | 'rx' | 'sys';
+}
 
 export function DataSimulationSlide() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [txCount, setTxCount] = useState(0);
   const [rxCount, setRxCount] = useState(0);
   const [isTransmitting, setIsTransmitting] = useState(false);
+  const [logs, setLogs] = useState<LogEntry[]>([{ id: 0, time: '00:00:00', msg: 'System Ready. 2.4GHz Band.', type: 'sys' }]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isPlaying) {
       interval = setInterval(() => {
-        setTxCount((prev) => prev + 1);
+        const now = new Date();
+        const tStr = `${now.getSeconds()}.${now.getMilliseconds().toString().padStart(3, '0')}`;
+        
+        setTxCount((prev) => {
+          const next = prev + 1;
+          setLogs(l => [...l.slice(-4), { id: Date.now(), time: tStr, msg: `TX sent packet #${next} [Hello IoT]`, type: 'tx' }]);
+          return next;
+        });
         setIsTransmitting(true);
         
         setTimeout(() => {
-          setRxCount((prev) => prev + 1);
+          const rNow = new Date();
+          const rtStr = `${rNow.getSeconds()}.${rNow.getMilliseconds().toString().padStart(3, '0')}`;
+          
+          setRxCount((prev) => {
+            const next = prev + 1;
+            setLogs(l => [...l.slice(-4), { id: Date.now()+1, time: rtStr, msg: `RX received packet #${next}`, type: 'rx' }]);
+            return next;
+          });
           setIsTransmitting(false);
-        }, 800); // 800ms travel time
+        }, 1200); // 1.2s travel time for visual effect
         
-      }, 2000); // Send every 2 seconds
+      }, 2500); // Send every 2.5 seconds
     }
     return () => clearInterval(interval);
   }, [isPlaying]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full text-white space-y-12">
-      <div className="text-center space-y-4">
-        <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
+    <div className="flex flex-col items-center justify-start w-full h-full text-white">
+      <div className="text-center space-y-2 mb-8 mt-4 shrink-0">
+        <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
           จำลองการส่งข้อมูล (Data Simulation)
         </h2>
-        <p className="text-xl text-gray-300">
-          สังเกตการเดินทางของ Data Packet จาก Transmitter ไปยัง Receiver
+        <p className="text-lg text-gray-400">
+          เห็นภาพชัดๆ ว่าข้อมูลลอยไปในอากาศและถูกถอดรหัสอย่างไร
         </p>
       </div>
 
-      <div className="flex items-center justify-center space-x-12 w-full max-w-4xl p-4 md:p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(59,130,246,0.3)] relative">
+      {/* Main Simulation Area */}
+      <div className="w-full flex-1 min-h-0 flex flex-col items-center justify-center relative bg-[#0a0f1c] rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] inset-0 overflow-hidden">
         
-        {/* Transmitter */}
-        <div className="flex flex-col items-center space-y-4 z-10">
-          <div className="w-24 h-24 rounded-full bg-blue-500/20 border border-blue-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.5)]">
-            <Send className="w-10 h-10 text-blue-400" />
-          </div>
-          <div className="text-center">
-            <h3 className="text-lg font-semibold">Transmitter (TX)</h3>
-            <p className="text-2xl font-mono text-cyan-300 mt-2">Count: {txCount}</p>
-          </div>
-        </div>
+        {/* Background Grid */}
+        <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
-        {/* Wireless Path */}
-        <div className="flex-1 h-1 bg-gray-700 relative flex items-center justify-center">
-          <Radio className="absolute -top-4 md:p-6 w-6 h-6 text-gray-500 animate-pulse" />
+        <div className="w-full max-w-5xl px-4 md:px-12 flex items-center justify-between relative z-10 my-auto">
           
-          {/* Animated Packet */}
-          {isTransmitting && (
-            <motion.div
-              initial={{ x: '-100%', opacity: 0 }}
-              animate={{ x: '100%', opacity: [0, 1, 1, 0] }}
-              transition={{ duration: 0.8, ease: 'linear' }}
-              className="absolute left-0 w-8 h-4 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)]"
-            />
-          )}
+          {/* Transmitter (Left) */}
+          <div className="flex flex-col items-center z-20">
+            <div className="relative">
+              {/* Radiating Waves */}
+              {isTransmitting && (
+                <>
+                  <motion.div initial={{ scale: 1, opacity: 0.8 }} animate={{ scale: 2.5, opacity: 0 }} transition={{ duration: 1, ease: "easeOut" }} className="absolute inset-0 rounded-full border-2 border-cyan-400" />
+                  <motion.div initial={{ scale: 1, opacity: 0.8 }} animate={{ scale: 3.5, opacity: 0 }} transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }} className="absolute inset-0 rounded-full border-2 border-blue-500" />
+                </>
+              )}
+              <div className="w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-blue-900 to-blue-600 border-2 border-cyan-400 flex items-center justify-center shadow-[0_0_30px_rgba(34,211,238,0.4)] relative overflow-hidden">
+                <Send className="w-10 h-10 md:w-14 md:h-14 text-white z-10" />
+                <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+              </div>
+            </div>
+            <div className="mt-4 text-center bg-black/60 px-4 py-2 rounded-xl border border-white/10 backdrop-blur-sm">
+              <h3 className="font-bold text-cyan-300">TX Node</h3>
+              <p className="text-xs text-gray-400 font-mono mt-1">Packets: {txCount}</p>
+            </div>
+          </div>
+
+          {/* Wireless Path & Packet */}
+          <div className="flex-1 h-32 relative flex items-center justify-center mx-4 md:mx-8">
+            {/* The Invisible Air */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-full h-[2px] border-t-2 border-dashed border-gray-600/50"></div>
+            </div>
+
+            <AnimatePresence>
+              {isTransmitting && (
+                <motion.div
+                  initial={{ left: '0%', opacity: 0, scale: 0.5 }}
+                  animate={{ left: '100%', opacity: [0, 1, 1, 0], scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1.2, ease: 'linear' }}
+                  className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center"
+                >
+                  <div className="bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.8)] border border-white/40 flex items-center gap-2 whitespace-nowrap">
+                    <Wifi size={14} className="animate-pulse text-white" />
+                    <span className="font-mono font-bold text-white text-sm">"Hello IoT"</span>
+                  </div>
+                  <div className="text-[10px] text-cyan-300 font-mono mt-2 bg-black/50 px-2 py-1 rounded">01001000 01100101</div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Receiver (Right) */}
+          <div className="flex flex-col items-center z-20">
+            <div className="relative">
+              <div className={`w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-purple-900 to-fuchsia-700 border-2 ${isTransmitting ? 'border-fuchsia-400 shadow-[0_0_30px_rgba(192,38,211,0.6)]' : 'border-purple-600 shadow-lg'} flex items-center justify-center transition-all duration-300`}>
+                <Download className={`w-10 h-10 md:w-14 md:h-14 text-white ${isTransmitting ? 'animate-bounce' : ''}`} />
+              </div>
+            </div>
+            <div className="mt-4 text-center bg-black/60 px-4 py-2 rounded-xl border border-white/10 backdrop-blur-sm">
+              <h3 className="font-bold text-fuchsia-300">RX Node</h3>
+              <p className="text-xs text-gray-400 font-mono mt-1">Packets: {rxCount}</p>
+            </div>
+          </div>
         </div>
 
-        {/* Receiver */}
-        <div className="flex flex-col items-center space-y-4 z-10">
-          <div className="w-24 h-24 rounded-full bg-purple-500/20 border border-purple-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.5)]">
-            <Download className="w-10 h-10 text-purple-400" />
+        {/* Telemetry Dashboard (Bottom) */}
+        <div className="absolute bottom-0 inset-x-0 p-4 md:p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col md:flex-row gap-4 items-end justify-between">
+          
+          {/* Logs */}
+          <div className="bg-black/60 border border-white/10 rounded-lg p-3 w-full md:w-1/3 font-mono text-xs h-28 flex flex-col justify-end overflow-hidden">
+            <AnimatePresence>
+              {logs.map((log) => (
+                <motion.div 
+                  key={log.id} 
+                  initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                  className={`py-0.5 ${log.type === 'tx' ? 'text-cyan-400' : log.type === 'rx' ? 'text-fuchsia-400' : 'text-gray-400'}`}
+                >
+                  <span className="opacity-50">[{log.time}]</span> {log.msg}
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
-          <div className="text-center">
-            <h3 className="text-lg font-semibold">Receiver (RX)</h3>
-            <p className="text-2xl font-mono text-fuchsia-300 mt-2">Count: {rxCount}</p>
+
+          {/* Controls */}
+          <div className="flex gap-4 z-30 shrink-0">
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className={`flex items-center px-6 py-3 rounded-full font-bold transition-all ${isPlaying ? 'bg-red-500/20 text-red-400 border border-red-500/50 hover:bg-red-500/30' : 'bg-cyan-500 text-black hover:bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.4)]'}`}
+            >
+              {isPlaying ? <Pause className="mr-2" size={18} /> : <Play className="mr-2" size={18} />}
+              {isPlaying ? 'หยุดส่ง (Pause)' : 'เริ่มส่ง (Start)'}
+            </button>
+            <button
+              onClick={() => { setIsPlaying(false); setTxCount(0); setRxCount(0); setLogs([{ id: Date.now(), time: '00:00:00', msg: 'System Reset.', type: 'sys' }]); }}
+              className="flex items-center px-4 py-3 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10 text-gray-300"
+            >
+              <RefreshCw size={18} />
+            </button>
+          </div>
+          
+          {/* Specs */}
+          <div className="hidden md:flex bg-black/60 border border-white/10 rounded-lg p-3 w-1/3 text-xs text-gray-400 flex-col gap-2">
+            <div className="flex justify-between border-b border-white/5 pb-1"><span>Frequency</span> <span className="text-white">2.400 GHz</span></div>
+            <div className="flex justify-between border-b border-white/5 pb-1"><span>Data Rate</span> <span className="text-white">1 Mbps</span></div>
+            <div className="flex justify-between"><span>Payload Size</span> <span className="text-white">32 Bytes</span></div>
           </div>
         </div>
-      </div>
-
-      {/* Controls */}
-      <div className="flex space-x-6">
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="flex items-center px-6 py-3 bg-blue-600/80 hover:bg-blue-500 rounded-full transition-all shadow-[0_0_15px_rgba(37,99,235,0.5)] hover:shadow-[0_0_25px_rgba(37,99,235,0.8)]"
-        >
-          {isPlaying ? <Pause className="mr-2" /> : <Play className="mr-2" />}
-          {isPlaying ? 'หยุด (Pause)' : 'เริ่ม (Play)'}
-        </button>
-        <button
-          onClick={() => {
-            setIsPlaying(false);
-            setTxCount(0);
-            setRxCount(0);
-          }}
-          className="flex items-center px-6 py-3 bg-white/10 hover:bg-white/20 rounded-full transition-all border border-white/20"
-        >
-          <RefreshCw className="mr-2" /> รีเซ็ต (Reset)
-        </button>
       </div>
     </div>
   );
