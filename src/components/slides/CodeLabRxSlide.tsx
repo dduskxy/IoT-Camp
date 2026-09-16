@@ -12,108 +12,124 @@ const RX_CODE_SECTIONS = [
   { id: 'loop', title: '4. Loop (Receive)', code: `void loop() {\n  if (radio.available()) {\n    char text[32] = "";\n    radio.read(&text, sizeof(text));\n    Serial.println(text);\n  }\n}`, explanation: 'ตรวจสอบตลอดเวลาว่ามีข้อมูลลอยมาไหม ถ้ามีให้ดึงข้อมูลมาเก็บไว้และปรินต์ออกหน้าจอ' }
 ];
 
+const WIRE_COLORS: Record<string, string> = {
+  "GND": "bg-[#8B4513] border-[#A0522D]",
+  "VCC": "bg-red-600 border-red-500",
+  "CE": "bg-purple-600 border-purple-500",
+  "CSN": "bg-blue-600 border-blue-500",
+  "SCK": "bg-orange-500 border-orange-400",
+  "MOSI": "bg-yellow-400 border-yellow-300",
+  "MISO": "bg-green-500 border-green-400",
+};
+
 export function CodeLabRxSlide() {
   const [activeSection, setActiveSection] = useState(RX_CODE_SECTIONS[0].id);
   const [rightTab, setRightTab] = useState<'output' | 'wiring'>('output');
 
   // Static connections for the reference
-  const connections = {
+  const connections: Record<string, string> = {
     "CE": "D9", "CSN": "D10", "SCK": "D13", "MOSI": "D11", "MISO": "D12", "VCC": "3.3V", "GND": "GND"
   };
+
+  const arduinoPinColors = Object.entries(connections).reduce((acc, [nrf, ctrl]) => ({...acc, [ctrl]: WIRE_COLORS[nrf]}), {});
 
   return (
     <div className="flex flex-col h-full w-full p-4 md:p-6 text-white bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(168,85,247,0.3)]">
       <div className="flex items-center gap-3 mb-6">
         <Code className="w-8 h-8 text-purple-400" />
-        <h2 className="text-3xl font-bold text-purple-400">Code Lab: ฝั่งผู้รับข้อมูล (RX)</h2>
+        <h2 className="text-3xl font-bold text-purple-400">Code Lab: ฝั่งผู้รับ (RX)</h2>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 h-full min-h-0">
-        {/* Left: Code Snippets */}
-        <div className="w-full md:w-1/2 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2 pb-4">
-          {RX_CODE_SECTIONS.map((section) => (
-            <motion.div
-              key={section.id}
-              onClick={() => setActiveSection(section.id)}
-              className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                activeSection === section.id 
-                  ? 'bg-purple-500/20 border-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.4)]' 
-                  : 'bg-black/50 border-white/10 hover:border-purple-400/50'
-              }`}
-            >
-              <h4 className="font-bold text-gray-300 mb-2">{section.title}</h4>
-              <pre className="text-sm font-mono text-pink-400 bg-black/60 p-3 rounded-lg overflow-x-auto">
-                {section.code}
-              </pre>
-            </motion.div>
-          ))}
+      <div className="flex flex-col md:flex-row gap-6 flex-1 min-h-0">
+        {/* Left Column: Code Logic */}
+        <div className="w-full md:w-1/2 flex flex-col min-h-0 relative">
+          <div className="absolute top-0 right-0 p-2 z-10 text-slate-500 font-mono text-xs">receiver.ino</div>
+          <div className="flex-1 bg-[#1e1e1e] rounded-xl overflow-hidden border border-white/10 shadow-inner flex flex-col font-mono text-sm leading-relaxed">
+            {RX_CODE_SECTIONS.map((section) => (
+              <motion.div
+                key={section.id}
+                onClick={() => setActiveSection(section.id)}
+                className={`p-4 border-l-4 cursor-pointer transition-colors ${
+                  activeSection === section.id 
+                    ? 'border-purple-500 bg-purple-500/10' 
+                    : 'border-transparent hover:bg-white/5'
+                }`}
+              >
+                <div className="text-gray-500 mb-1">{section.title}</div>
+                <pre className="text-gray-300 overflow-x-auto custom-scrollbar">
+                  <code>{section.code}</code>
+                </pre>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
-        {/* Right: Explanation & Output/Wiring */}
-        <div className="w-full md:w-1/2 flex flex-col gap-6 min-h-0">
-          <motion.div 
-            key={activeSection}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex-none p-6 bg-purple-900/30 rounded-xl border border-purple-400/30"
-          >
-            <h3 className="text-xl font-bold text-purple-300 mb-3 flex items-center gap-2">
-              <Cpu className="w-5 h-5" /> คำอธิบายโค้ด
-            </h3>
-            <p className="text-lg text-purple-100 leading-relaxed">
-              {RX_CODE_SECTIONS.find(s => s.id === activeSection)?.explanation}
-            </p>
-          </motion.div>
+        {/* Right Column: Output / Wiring Tab */}
+        <div className="w-full md:w-1/2 flex flex-col min-h-0">
+          <div className="flex bg-black/40 p-1 rounded-xl mb-4 border border-white/5">
+            <button 
+              onClick={() => setRightTab('output')}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-all ${rightTab === 'output' ? 'bg-purple-600 text-white shadow-lg' : 'text-gray-400 hover:text-gray-200'}`}
+            >
+              <Terminal size={16} /> Serial Monitor
+            </button>
+            <button 
+              onClick={() => setRightTab('wiring')}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-all ${rightTab === 'wiring' ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-400 hover:text-gray-200'}`}
+            >
+              <Cpu size={16} /> Hardware Ref
+            </button>
+          </div>
 
-          <div className="flex-1 flex flex-col bg-black/80 rounded-xl border border-gray-700 shadow-inner overflow-hidden min-h-0">
-            {/* Tabs */}
-            <div className="flex border-b border-gray-700 bg-black/50">
-              <button 
-                onClick={() => setRightTab('output')}
-                className={`flex-1 py-3 px-4 font-bold text-sm flex items-center justify-center gap-2 transition-colors ${rightTab === 'output' ? 'bg-purple-900/40 text-purple-400 border-b-2 border-purple-400' : 'text-gray-500 hover:bg-white/5'}`}
-              >
-                <Terminal className="w-4 h-4" /> Serial Monitor (RX)
-              </button>
-              <button 
-                onClick={() => setRightTab('wiring')}
-                className={`flex-1 py-3 px-4 font-bold text-sm flex items-center justify-center gap-2 transition-colors ${rightTab === 'wiring' ? 'bg-purple-900/40 text-purple-400 border-b-2 border-purple-400' : 'text-gray-500 hover:bg-white/5'}`}
-              >
-                <Link2 className="w-4 h-4" /> ดูแผนผังการต่อสาย
-              </button>
-            </div>
-
-            {/* Tab Content */}
-            <div className="flex-1 overflow-y-auto relative p-4 custom-scrollbar">
-              <AnimatePresence mode="wait">
-                {rightTab === 'output' ? (
-                  <motion.div 
-                    key="output"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="font-mono text-pink-400 text-sm space-y-1"
-                  >
-                    <p>{">"} Received: Hello IoT</p>
-                    <p>{">"} Received: Hello IoT</p>
-                    <p>{">"} Received: Hello IoT</p>
-                    <p className="animate-pulse">{">"} _</p>
-                  </motion.div>
-                ) : (
-                  <motion.div 
-                    key="wiring"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="flex flex-col items-center gap-6 py-4 transform scale-75 origin-top"
-                  >
-                    <div className="flex justify-center gap-4 md:p-6 w-full">
-                      <NRF24L01 activeConnections={connections} />
-                      <ArduinoUno activeConnections={Object.entries(connections).reduce((acc, [k, v]) => ({...acc, [v]: k}), {})} />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+          <div className="flex-1 rounded-xl border border-white/10 overflow-hidden relative shadow-inner">
+            <AnimatePresence mode="wait">
+              {rightTab === 'output' ? (
+                <motion.div
+                  key="output"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="w-full h-full bg-black p-4 font-mono text-green-400 flex flex-col"
+                >
+                  <div className="flex items-center gap-2 text-gray-500 text-xs mb-4 border-b border-white/10 pb-2">
+                    <Terminal size={12} /> COM4 - 9600 baud
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-gray-400">Initializing NRF24L01...</p>
+                    <p className="text-gray-400">Radio is ready.</p>
+                    <p className="text-gray-400">Listening on address: 00001</p>
+                    <p className="mt-4">Hello IoT</p>
+                    <p>Hello IoT</p>
+                    <p className="animate-pulse">_</p>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="wiring"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="w-full h-full bg-[#111111] overflow-y-auto custom-scrollbar"
+                >
+                  <div className="p-4 text-center border-b border-white/5">
+                    <h3 className="font-bold text-emerald-400">Reference Wiring</h3>
+                    <p className="text-xs text-gray-400">ดูไว้เผื่อลืมตอนเขียนโค้ด</p>
+                  </div>
+                  <div className="w-full flex justify-center items-center h-full min-h-[300px]">
+                    <motion.div 
+                      initial={{ scale: 0.9 }}
+                      animate={{ scale: 1 }}
+                      className="flex flex-col items-center gap-6 py-4 transform scale-75 origin-top"
+                    >
+                      <div className="flex justify-center gap-4 md:p-6 w-full">
+                        <NRF24L01 activeConnections={connections} pinColors={WIRE_COLORS} />
+                        <ArduinoUno activeConnections={Object.entries(connections).reduce((acc, [k, v]) => ({...acc, [v]: k}), {})} pinColors={arduinoPinColors as Record<string, string>} />
+                      </div>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
