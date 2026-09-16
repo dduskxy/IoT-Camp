@@ -72,6 +72,49 @@ export default function WelcomePage() {
 // Components
 // -----------------------------------------------------
 
+function AnimatedMesh() {
+  return (
+    <div className="absolute inset-0 z-[-1] overflow-hidden pointer-events-none flex justify-center items-center opacity-40 mix-blend-screen">
+      <motion.svg
+        viewBox="0 0 800 800"
+        className="w-[800px] h-[800px] md:w-[1200px] md:h-[1200px]"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
+      >
+        <defs>
+          <linearGradient id="meshGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.1" />
+            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.1" />
+          </linearGradient>
+        </defs>
+        {Array.from({ length: 18 }).map((_, i) => (
+          <motion.ellipse
+            key={i}
+            cx="400"
+            cy="400"
+            rx="300"
+            ry="100"
+            fill="none"
+            stroke="url(#meshGrad)"
+            strokeWidth="1"
+            style={{ transformOrigin: "400px 400px", rotate: i * 20 }}
+            animate={{
+              rx: [300, 350, 300],
+              ry: [100, 150, 100],
+            }}
+            transition={{
+              duration: 8 + (i % 5),
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </motion.svg>
+    </div>
+  );
+}
+
 function HeroSection({ onStart }: { onStart: () => void }) {
   return (
     <motion.div
@@ -79,25 +122,27 @@ function HeroSection({ onStart }: { onStart: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.6 }}
-      className="max-w-3xl mx-auto text-center"
+      className="max-w-4xl mx-auto text-center relative"
     >
+      <AnimatedMesh />
+      
       <motion.div 
         initial={{ scale: 0.8, opacity: 0 }} 
         animate={{ scale: 1, opacity: 1 }} 
         transition={{ delay: 0.2, duration: 0.5 }}
-        className="mb-8 inline-flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 backdrop-blur-md"
+        className="mb-8 inline-flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 backdrop-blur-md relative z-10"
       >
         <span className="text-xs font-mono tracking-widest text-blue-300 px-4">NAKHON PHANOM WITTAYAKOM SCHOOL</span>
       </motion.div>
       
-      <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
+      <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-6 relative z-10">
         <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">WELCOME TO</span>
-        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-blue-500 drop-shadow-[0_0_30px_rgba(59,130,246,0.3)] mt-2">
+        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-300 drop-shadow-[0_0_40px_rgba(59,130,246,0.4)] mt-2">
           IoT MISSION
         </span>
       </h1>
       
-      <div className="flex flex-col md:flex-row items-center justify-center space-y-2 md:space-y-0 md:space-x-6 text-sm md:text-base text-white/60 mb-12 font-mono">
+      <div className="flex flex-col md:flex-row items-center justify-center space-y-2 md:space-y-0 md:space-x-6 text-sm md:text-base text-white/60 mb-12 font-mono relative z-10">
         <div className="flex items-center"><Clock className="w-4 h-4 mr-2" /> 17 SEPTEMBER 2026</div>
         <div className="hidden md:block w-1 h-1 bg-white/30 rounded-full"></div>
         <div className="flex items-center"><User className="w-4 h-4 mr-2" /> ENGINEERING FACULTY NPU</div>
@@ -107,14 +152,14 @@ function HeroSection({ onStart }: { onStart: () => void }) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={onStart}
-        className="group relative inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold tracking-wide transition-all overflow-hidden"
+        className="group relative inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold tracking-wide transition-all overflow-hidden shadow-[0_0_40px_rgba(37,99,235,0.3)] z-10"
       >
         <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent)] -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
         <Search className="w-5 h-5 mr-3" />
         ค้นหาชื่อของฉัน
         <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
       </motion.button>
-      <p className="mt-4 text-xs text-white/40">ค้นหาชื่อเพื่อดูภารกิจและทีมของคุณ</p>
+      <p className="mt-4 text-xs text-white/40 relative z-10">ค้นหาชื่อเพื่อดูภารกิจและทีมของคุณ</p>
     </motion.div>
   );
 }
