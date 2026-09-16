@@ -46,7 +46,7 @@ export default function WelcomePage() {
             <span className="font-bold tracking-wider text-sm cursor-pointer" onClick={() => setAppState("hero")}>IoT MISSION</span>
           </div>
           <div className="flex space-x-4 text-xs font-medium text-white/50">
-            <button onClick={() => setAppState("brief")} className="hover:text-white transition">MISSION BRIEF</button>
+            <button onClick={() => setAppState("brief")} className="hover:text-white transition">WELCOME MESSAGE</button>
             <button onClick={() => setAppState("all_teams")} className="hover:text-white transition">ALL TEAMS</button>
             <button onClick={() => setAppState("timeline")} className="hover:text-white transition">TIMELINE</button>
           </div>
@@ -341,23 +341,27 @@ function BriefSection({ onBack }: { onBack: () => void }) {
       </button>
 
       <h2 className="text-3xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-        ทำไมเราถึงต้องเรียนรู้ IoT? (Mission Brief)
+        ทำไมเราถึงมาอยู่ที่นี่?
       </h2>
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-md space-y-6 text-white/80 leading-relaxed">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-md space-y-6 text-white/80 leading-relaxed text-sm md:text-base">
         <p>
-          ในยุคปัจจุบัน เทคโนโลยี <strong>Internet of Things (IoT)</strong> ไม่ได้เป็นเพียงแค่เรื่องของอนาคต แต่เป็นสิ่งที่อยู่รอบตัวเราในชีวิตประจำวัน ไม่ว่าจะเป็นสมาร์ทโฮม ระบบการเกษตรอัจฉริยะ หรือแม้แต่ในโรงพยาบาลและอุตสาหกรรมขนาดใหญ่
+          สวัสดีครับน้องๆ ทุกคน ยินดีต้อนรับเข้าสู่ค่าย <strong>IoT & AUTOMATION MISSION 2026</strong> นะครับ!
         </p>
         <p>
-          ค่าย <strong>IoT & AUTOMATION MISSION 2026</strong> จัดขึ้นเพื่อเปิดโอกาสให้นักเรียนระดับชั้นมัธยมศึกษาตอนปลาย ได้สัมผัสและลงมือปฏิบัติจริงกับเทคโนโลยีเหล่านี้ โดยเป้าหมายหลักของเราคือ:
+          หลายคนอาจจะสงสัยว่า <span className="text-blue-300">"ทำไมเราต้องมารู้จัก IoT?"</span> และ <span className="text-blue-300">"เรามาทำอะไรกันที่นี่?"</span>
         </p>
-        <ul className="list-disc list-inside space-y-3 text-white/70 ml-2">
-          <li><strong className="text-blue-300">สร้างความเข้าใจพื้นฐาน:</strong> เรียนรู้ว่าอุปกรณ์ต่างๆ สามารถพูดคุยและแลกเปลี่ยนข้อมูลกันได้อย่างไรผ่านอินเทอร์เน็ต</li>
-          <li><strong className="text-blue-300">พัฒนาทักษะการแก้ปัญหา:</strong> ฝึกกระบวนการคิดเชิงตรรกะผ่านการต่อวงจร (Hardware) และเขียนโปรแกรม (Firmware)</li>
-          <li><strong className="text-blue-300">ทำงานร่วมกันเป็นทีม:</strong> เพราะในโลกแห่งความเป็นจริง โปรเจกต์ที่ยิ่งใหญ่เกิดจากการทำงานร่วมกันของคนที่มีความถนัดหลากหลายด้าน (Roles)</li>
-        </ul>
-        <p className="pt-4 border-t border-white/10 text-cyan-200 font-mono text-sm">
-          &#34;เทคโนโลยีไม่ได้มีไว้เพียงแค่ใช้งาน แต่มีไว้เพื่อให้เราสร้างสรรค์สิ่งใหม่&#34;
+        <p>
+          ในยุคนี้ <strong>Internet of Things (IoT)</strong> ไม่ใช่แค่เรื่องของอนาคตอีกต่อไป แต่มันคือสิ่งที่มีผลกับชีวิตเราในทุกๆ วัน ตั้งแต่สมาร์ทโฟนที่เราใช้ สมาร์ทโฮม ระบบการเกษตรอัจฉริยะ ไปจนถึงเทคโนโลยีทางการแพทย์ ทุกอย่างกำลังถูกเชื่อมต่อเข้าด้วยกันผ่านอินเทอร์เน็ต
+        </p>
+        <p>
+          ค่ายในวันนี้ถูกจัดขึ้นมา ไม่ใช่แค่เพื่อให้เรานั่งฟังบรรยาย แต่เพื่อให้พวกเราได้ <strong>"ลงมือทำ"</strong> ได้ลองต่อวงจร ได้ลองเขียนโค้ดสั่งการมันด้วยตัวเอง เพื่อให้เราเข้าใจว่าเบื้องหลังเทคโนโลยีล้ำๆ เหล่านี้ มันทำงานยังไง และตัวเราเองก็สามารถสร้างมันขึ้นมาได้เช่นกัน
+        </p>
+        <p className="pt-4 border-t border-white/10 text-cyan-200 font-mono text-center text-lg mt-4 font-bold">
+          "เทคโนโลยีไม่ได้มีไว้เพื่อให้เราเป็นแค่ผู้ใช้งาน<br/>แต่มันมีไว้เพื่อให้เราเป็นผู้สร้าง"
+        </p>
+        <p className="text-center text-white/50 text-sm mt-2">
+          ขอให้ทุกคนสนุกกับการเรียนรู้และทำภารกิจในวันนี้นะครับ!
         </p>
       </div>
     </motion.div>
