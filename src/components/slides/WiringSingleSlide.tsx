@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { CheckCircle2, XCircle, RefreshCcw } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2, XCircle, RefreshCcw, Info } from "lucide-react";
+import { ArduinoUno } from "../hardware/ArduinoUno";
+import { NRF24L01, NRF_PINS } from "../hardware/NRF24L01";
 
 const TARGET_WIRING: Record<string, string> = {
   "CE": "D9",
@@ -13,12 +15,22 @@ const TARGET_WIRING: Record<string, string> = {
   "GND": "GND"
 };
 
+const WIRE_COLORS: Record<string, string> = {
+  "GND": "bg-black border-gray-600",
+  "VCC": "bg-red-500 border-red-400",
+  "CE": "bg-orange-500 border-orange-400",
+  "CSN": "bg-yellow-500 border-yellow-400",
+  "SCK": "bg-green-500 border-green-400",
+  "MOSI": "bg-blue-500 border-blue-400",
+  "MISO": "bg-purple-500 border-purple-400",
+  "IRQ": "bg-gray-400 border-gray-300",
+};
+
 export function WiringSingleSlide() {
   const [connections, setConnections] = useState<Record<string, string>>({});
   const [selectedNrfPin, setSelectedNrfPin] = useState<string | null>(null);
 
   const nrfPins = Object.keys(TARGET_WIRING);
-  const ctrlPins = ["D9", "D10", "D11", "D12", "D13", "3.3V", "5V", "GND"];
 
   const handleNrfClick = (pin: string) => {
     if (selectedNrfPin === pin) {
@@ -51,101 +63,126 @@ export function WiringSingleSlide() {
   const status = checkWiring();
 
   return (
-    <div className="w-full h-full p-6 flex flex-col bg-transparent text-white font-sans">
+    <div className="w-full h-full flex flex-col bg-transparent text-white font-sans">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Simulator: ต่อสาย NRF24L01</h2>
-        <p className="text-gray-400 mt-2">คลิกที่พอร์ต NRF แล้วคลิกที่พอร์ตบอร์ดเพื่อเชื่อมต่อสาย</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+          Wiring Simulator: Arduino ↔ NRF24L01
+        </h2>
+        <p className="text-gray-400 mt-2 text-lg">Click a pin on the NRF24L01, then click the matching pin on the Arduino Uno.</p>
       </div>
 
-      <div className="flex-1 flex flex-col md:flex-row gap-8 justify-center items-stretch max-w-5xl mx-auto w-full">
-        {/* NRF Module */}
-        <div className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md relative flex flex-col">
-          <h3 className="text-xl font-semibold mb-6 text-center text-purple-400">NRF24L01 Pins</h3>
-          <div className="flex-1 flex flex-col gap-3 justify-center">
-            {nrfPins.map(pin => {
-              const isConnected = !!connections[pin];
-              const isSelected = selectedNrfPin === pin;
-              const isCorrect = isConnected && connections[pin] === TARGET_WIRING[pin];
-              const isWrong = isConnected && connections[pin] !== TARGET_WIRING[pin];
+      <div className="flex-1 flex flex-col xl:flex-row gap-12 justify-center items-center w-full">
+        {/* NRF24L01 Side */}
+        <div className="flex flex-col items-center">
+          <h3 className="text-xl font-bold mb-4 text-purple-400">1. Select NRF24 Pin</h3>
+          <NRF24L01 
+            onPinClick={handleNrfClick}
+            selectedPin={selectedNrfPin}
+            activeConnections={connections}
+          />
+        </div>
 
-              return (
-                <motion.button
-                  key={`nrf-${pin}`}
-                  onClick={() => handleNrfClick(pin)}
-                  className={`p-3 rounded-xl border flex justify-between items-center transition-all ${
-                    isSelected ? 'bg-purple-500/30 border-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.4)]' :
-                    isConnected ? 'bg-white/10 border-white/30' : 'bg-white/5 border-white/10 hover:bg-white/10'
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+        {/* Wire Connections Status */}
+        <div className="w-full xl:w-64 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col">
+          <h3 className="text-lg font-bold text-white mb-4 flex items-center justify-between">
+            <span>Connections</span>
+            <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full">{Object.keys(connections).length} / {nrfPins.length}</span>
+          </h3>
+          <div className="flex-1 flex flex-col gap-2 overflow-y-auto custom-scrollbar">
+            <AnimatePresence>
+              {Object.entries(connections).map(([nrfPin, ctrlPin]) => (
+                <motion.div
+                  key={nrfPin}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="flex items-center justify-between p-2 rounded-lg bg-black/40 border border-white/5"
                 >
-                  <span className="font-mono font-bold">{pin}</span>
-                  <div className="flex items-center gap-2">
-                    {isConnected && (
-                      <span className="text-xs px-2 py-1 bg-black/40 rounded-md font-mono text-gray-300">
-                        {connections[pin]}
-                      </span>
-                    )}
-                    {status.isComplete && isCorrect && <CheckCircle2 size={16} className="text-green-400" />}
-                    {status.isComplete && isWrong && <XCircle size={16} className="text-red-400" />}
+                  <div className="flex items-center gap-3">
+                    <div className={`w-3 h-3 rounded-full border ${WIRE_COLORS[nrfPin] || 'bg-white'}`}></div>
+                    <span className="font-mono font-bold text-sm">{nrfPin}</span>
                   </div>
-                </motion.button>
-              );
-            })}
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">→</span>
+                    <span className="font-mono font-bold text-sm text-blue-300">{ctrlPin}</span>
+                    <button 
+                      onClick={() => setConnections(prev => {
+                        const next = {...prev};
+                        delete next[nrfPin];
+                        return next;
+                      })}
+                      className="ml-2 text-gray-500 hover:text-red-400 transition-colors"
+                    >
+                      <XCircle size={14} />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+              {Object.keys(connections).length === 0 && (
+                <div className="text-center text-gray-500 text-sm mt-10 italic">
+                  No wires connected yet.
+                </div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
-        {/* Controller */}
-        <div className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md relative flex flex-col">
-          <h3 className="text-xl font-semibold mb-6 text-center text-blue-400">Controller Pins</h3>
-          <div className="flex-1 flex flex-col gap-3 justify-center">
-            {ctrlPins.map(pin => {
-              const isTargeted = selectedNrfPin !== null;
-              
-              return (
-                <motion.button
-                  key={`ctrl-${pin}`}
-                  onClick={() => handleCtrlClick(pin)}
-                  disabled={!isTargeted}
-                  className={`p-3 rounded-xl border flex justify-between items-center transition-all ${
-                    isTargeted ? 'bg-blue-900/20 border-blue-500/50 hover:bg-blue-800/40 cursor-pointer shadow-[0_0_10px_rgba(59,130,246,0.2)]' : 'bg-black/40 border-white/5 opacity-50 cursor-not-allowed'
-                  }`}
-                  whileHover={isTargeted ? { scale: 1.02, x: -5 } : {}}
-                  whileTap={isTargeted ? { scale: 0.98 } : {}}
-                >
-                  <span className="font-mono font-bold">{pin}</span>
-                  <div className="w-4 h-4 rounded-full bg-black border border-white/20"></div>
-                </motion.button>
-              );
-            })}
-          </div>
+        {/* Arduino Side */}
+        <div className="flex flex-col items-center">
+          <h3 className="text-xl font-bold mb-4 text-blue-400">2. Connect to Arduino</h3>
+          <ArduinoUno 
+            onPinClick={handleCtrlClick}
+            selectedPin={null}
+            activeConnections={Object.entries(connections).reduce((acc, [k, v]) => ({...acc, [v]: k}), {})}
+          />
         </div>
       </div>
 
-      {/* Status Bar */}
+      {/* Verification Status */}
       <motion.div 
-        className="mt-8 max-w-5xl mx-auto w-full p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-between"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        className="mt-12 w-full max-w-4xl mx-auto p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
       >
-        <div>
-          <p className="text-sm text-gray-400">สถานะการเชื่อมต่อ:</p>
-          <div className="flex items-center gap-3">
-            <span className="text-xl font-bold">{Object.keys(connections).length} / {status.total} สาย</span>
-            {status.isComplete && (
-              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${status.isPerfect ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
-                {status.isPerfect ? 'ยอดเยี่ยม! ต่อสายถูกต้องทั้งหมด' : `มีข้อผิดพลาด ${status.total - status.correct} จุด`}
-              </span>
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-blue-500/20 rounded-full text-blue-400">
+            <Info size={24} />
+          </div>
+          <div>
+            <h4 className="font-bold text-lg">Wiring Check</h4>
+            {status.isComplete ? (
+              <p className={status.isPerfect ? "text-green-400" : "text-red-400"}>
+                {status.isPerfect ? "Excellent! All wires are correctly connected." : `You have ${status.total - status.correct} incorrect connections.`}
+              </p>
+            ) : (
+              <p className="text-gray-400 text-sm">Connect all 7 essential pins (CE, CSN, SCK, MOSI, MISO, VCC, GND).</p>
             )}
           </div>
         </div>
-        <button
-          onClick={() => { setConnections({}); setSelectedNrfPin(null); }}
-          className="p-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors flex items-center gap-2"
-        >
-          <RefreshCcw size={18} />
-          <span>เริ่มใหม่</span>
-        </button>
+        
+        <div className="flex gap-3">
+          {status.isComplete && !status.isPerfect && (
+            <button
+              onClick={() => {
+                const correctOnly: Record<string, string> = {};
+                Object.entries(connections).forEach(([k, v]) => {
+                  if (TARGET_WIRING[k] === v) correctOnly[k] = v;
+                });
+                setConnections(correctOnly);
+              }}
+              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors font-semibold"
+            >
+              Remove Wrong Wires
+            </button>
+          )}
+          <button
+            onClick={() => { setConnections({}); setSelectedNrfPin(null); }}
+            className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors flex items-center gap-2 font-semibold"
+          >
+            <RefreshCcw size={16} />
+            Reset All
+          </button>
+        </div>
       </motion.div>
     </div>
   );
