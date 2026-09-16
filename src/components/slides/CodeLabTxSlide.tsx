@@ -63,16 +63,28 @@ export function CodeLabTxSlide() {
   useEffect(() => {
     if (rightTab !== 'output' || !isRunning) return;
     
-    setTerminalLines(["Initializing NRF24L01...", "Radio is ready.", "Setting TX address: 00001"]);
+    setTerminalLines([
+      "========================================",
+      "Testing Master Transmitter NRF24L01...",
+      "SUCCESS: NRF24L01 found on Master Transmitter!",
+      "========================================",
+      "MASTER_READY: Broadcast Transmitter Active (115200 baud)."
+    ]);
     
     let count = 0;
     const interval = setInterval(() => {
-      count++;
+      count = (count % 5) + 1; // loop 1 to 5 fingers
+      const colors = ["", "RED (255, 0, 0)", "GREEN (0, 255, 0)", "BLUE (0, 0, 255)", "YELLOW (255, 255, 0)", "PURPLE (180, 0, 255)"];
+      
       setTerminalLines(prev => {
-        const newLines = [...prev, `[${new Date().toLocaleTimeString()}] Sending: Hello IoT ... Success`];
-        return newLines.slice(-8); // Keep last 8 lines
+        const newLines = [
+          ...prev, 
+          `ACK: ${count} Finger${count > 1 ? 's' : ''} -> ${colors[count]}`,
+          `RF24_BROADCAST: Sent finger count [${count}] -> Broadcasted to 3 Receivers`
+        ];
+        return newLines.slice(-12);
       });
-    }, 1500);
+    }, 2500);
 
     return () => clearInterval(interval);
   }, [rightTab, isRunning]);

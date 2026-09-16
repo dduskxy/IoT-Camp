@@ -60,16 +60,28 @@ export function CodeLabRxSlide() {
   useEffect(() => {
     if (rightTab !== 'output' || !isRunning) return;
     
-    setTerminalLines(["Initializing NRF24L01...", "Radio is ready.", "Listening on address: 00001"]);
+    setTerminalLines([
+      "========================================",
+      "Testing NRF24L01 Receiver (Multi-Node)...",
+      "SUCCESS: NRF24L01 found on Receiver Node!",
+      "========================================",
+      "RECEIVER_READY: Listening for RF24 broadcast from transmitter..."
+    ]);
     
     let count = 0;
     const interval = setInterval(() => {
-      count++;
+      count = (count % 5) + 1;
+      const colors = ["", "RED", "GREEN", "BLUE", "YELLOW", "PURPLE"];
+      
       setTerminalLines(prev => {
-        const newLines = [...prev, `[${new Date().toLocaleTimeString()}] Received: Hello IoT`];
-        return newLines.slice(-8); // Keep last 8 lines
+        const newLines = [
+          ...prev, 
+          `ACK: ${count} Finger${count > 1 ? 's' : ''} -> ${colors[count]}`,
+          `SYNC:${count}`
+        ];
+        return newLines.slice(-12);
       });
-    }, 1500);
+    }, 2500);
 
     return () => clearInterval(interval);
   }, [rightTab, isRunning]);
