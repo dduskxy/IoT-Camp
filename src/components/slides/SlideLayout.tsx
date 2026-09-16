@@ -27,14 +27,26 @@ export function SlideLayout({
   return (
     <div className="flex flex-col h-screen w-full bg-[#030303] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(79,70,229,0.15),rgba(255,255,255,0))] text-slate-200 font-sans overflow-hidden">
       
-      {/* Floating TOC Button */}
-      <button 
-        onClick={() => setIsSidebarOpen(true)}
-        className="fixed top-4 right-4 md:top-6 md:right-8 z-40 flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-full transition-colors border border-white/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] text-slate-300"
-      >
-        <BookOpen size={16} className="text-indigo-400" />
-        <span className="hidden sm:inline text-sm font-medium">สารบัญบทเรียน</span>
-      </button>
+            {/* Floating Top Right Menu */}
+      <div className="fixed top-4 right-4 md:top-6 md:right-8 z-40 flex items-center gap-2">
+        <a 
+          href="/docs/present.pdf" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 backdrop-blur-md rounded-full transition-colors border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.3)] text-purple-100"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+          <span className="hidden sm:inline text-sm font-medium">สไลด์ประกอบ</span>
+        </a>
+
+        <button 
+          onClick={() => setIsSidebarOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-full transition-colors border border-white/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] text-slate-300"
+        >
+          <BookOpen size={16} className="text-indigo-400" />
+          <span className="hidden sm:inline text-sm font-medium">สารบัญ</span>
+        </button>
+      </div>
 
       {/* Main Content Area */}
       <div className="flex-1 flex overflow-hidden relative">
@@ -129,3 +141,4 @@ export function SlideLayout({
     </div>
   );
 }
+
