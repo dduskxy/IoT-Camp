@@ -18,7 +18,7 @@ export default function Home() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <div ref={containerRef} className="min-h-[100dvh] bg-[#030303] text-white font-sans flex flex-col overflow-hidden relative selection:bg-blue-500/30">
+    <div ref={containerRef} className="h-[100dvh] w-screen bg-[#030303] text-white font-sans flex flex-col overflow-y-auto overflow-x-hidden relative selection:bg-blue-500/30">
       
       {/* High-end animated background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

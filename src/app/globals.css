@@ -128,3 +128,7 @@
     @apply font-sans;
   }
 }
+
+/* Hide scrollbars globally */
+::-webkit-scrollbar { display: none; }
+* { -ms-overflow-style: none; scrollbar-width: none; }

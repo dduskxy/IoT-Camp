@@ -45,7 +45,7 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
   const progressPercentage = (currentStep / totalSlides) * 100;
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-[#030303] text-white font-sans selection:bg-blue-500/30 overflow-hidden relative">
+    <div className="h-[100dvh] w-screen flex flex-col bg-[#030303] text-white font-sans selection:bg-blue-500/30 overflow-hidden relative">
       
       {/* Abstract Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
