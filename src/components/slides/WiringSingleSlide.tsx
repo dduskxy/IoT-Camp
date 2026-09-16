@@ -17,13 +17,13 @@ const TARGET_WIRING: Record<string, string> = {
 };
 
 const WIRE_COLORS: Record<string, string> = {
-  "GND": "bg-black border-gray-600",
-  "VCC": "bg-red-500 border-red-400",
-  "CE": "bg-orange-500 border-orange-400",
-  "CSN": "bg-yellow-500 border-yellow-400",
-  "SCK": "bg-green-500 border-green-400",
-  "MOSI": "bg-blue-500 border-blue-400",
-  "MISO": "bg-purple-500 border-purple-400",
+  "GND": "bg-[#8B4513] border-[#A0522D]", // Brown
+  "VCC": "bg-red-600 border-red-500", // Red
+  "CE": "bg-purple-600 border-purple-500", // Purple
+  "CSN": "bg-blue-600 border-blue-500", // Blue
+  "SCK": "bg-orange-500 border-orange-400", // Orange
+  "MOSI": "bg-yellow-400 border-yellow-300", // Yellow
+  "MISO": "bg-green-500 border-green-400", // Green
 };
 
 const STEPS = [
