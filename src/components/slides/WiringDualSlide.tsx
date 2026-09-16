@@ -27,7 +27,7 @@ export function WiringDualSlide() {
             </div>
             <div>
               <h3 className="text-2xl font-bold text-blue-400">Transmitter (TX)</h3>
-              <p className="text-sm text-gray-400">ฝั่งส่งข้อมูล (เช่น เซ็นเซอร์, รีโมท)</p>
+              <p className="text-sm text-gray-400">อ่านค่านิ้วมือจาก Web AI ผ่าน Serial</p>
             </div>
           </div>
 
@@ -35,7 +35,7 @@ export function WiringDualSlide() {
             <div className="p-4 bg-black/40 rounded-xl border border-white/5">
               <p className="font-semibold text-gray-200 mb-2">Microcontroller</p>
               <ul className="text-sm text-gray-400 list-disc list-inside space-y-1">
-                <li>อ่านค่าจากเซ็นเซอร์</li>
+                <li>รับค่าจำนวนนิ้วมือจาก Computer</li>
                 <li>เตรียมแพ็คเกจข้อมูล</li>
               </ul>
             </div>
@@ -83,7 +83,7 @@ export function WiringDualSlide() {
             </div>
             <div>
               <h3 className="text-2xl font-bold text-pink-400">Receiver (RX)</h3>
-              <p className="text-sm text-gray-400">ฝั่งรับข้อมูล (เช่น จอแสดงผล, ควบคุมรีเลย์)</p>
+              <p className="text-sm text-gray-400">รับข้อมูลเพื่อสั่งเปลี่ยนสีไฟ RGB LED</p>
             </div>
           </div>
 
@@ -96,7 +96,7 @@ export function WiringDualSlide() {
               <p className="font-semibold text-gray-200 mb-2">Microcontroller</p>
               <ul className="text-sm text-gray-400 list-disc list-inside space-y-1">
                 <li>ประมวลผลคำสั่ง</li>
-                <li>สั่งงาน Actuators</li>
+                <li>สั่งงาน Grove RGB LED</li>
               </ul>
             </div>
           </div>
