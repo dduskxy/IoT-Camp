@@ -68,17 +68,18 @@ export function HardwareSlide() {
             {/* Background Glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
             
-            {/* Real Image Container */}
+            {/* Icon Container (Reverted from Image) */}
             <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl mb-8 group-hover:scale-[1.02] transition-transform duration-500 bg-white/5 flex items-center justify-center">
-              <img 
-                src={selectedEq.imageUrl} 
-                alt={selectedEq.name}
-                className="w-full h-full object-contain opacity-100 transition-opacity p-4 rounded-xl"
-              />
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-50"></div>
+              
+              <div className="relative z-10 p-12 bg-indigo-500/20 backdrop-blur-md rounded-3xl border border-indigo-400/30 shadow-[0_0_50px_rgba(99,102,241,0.3)]">
+                <selectedEq.icon size={80} className="text-indigo-300 drop-shadow-[0_0_20px_rgba(165,180,252,0.8)]" />
+              </div>
+
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
               
               <div className="absolute bottom-4 left-6 flex items-center gap-3">
-                <div className="p-2 bg-indigo-500/30 backdrop-blur-md rounded-lg text-indigo-300 border border-indigo-400/30">
+                <div className="p-2 bg-indigo-500/30 backdrop-blur-md rounded-lg text-indigo-300 border border-indigo-400/30 hidden">
                   <selectedEq.icon size={24} />
                 </div>
                 <h3 className="text-3xl font-bold text-white drop-shadow-md">{selectedEq.name}</h3>
