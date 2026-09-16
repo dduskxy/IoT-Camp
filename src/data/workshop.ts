@@ -15,10 +15,9 @@ export const workshopSlides: Slide[] = [
   { id: 7, title: "Two Boards Wiring", subtitle: "ต่อวงจรสำหรับสองบอร์ด", slug: "wiring-dual" },
   { id: 8, title: "TX Code Lab", subtitle: "เขียนโค้ดฝั่งส่ง", slug: "code-tx" },
   { id: 9, title: "RX Code Lab", subtitle: "เขียนโค้ดฝั่งรับ", slug: "code-rx" },
-  { id: 10, title: "Dual Serial Monitor", subtitle: "ดูผลลัพธ์ของทั้งสองบอร์ด", slug: "serial-monitor" },
+  { id: 10, title: "Dual Serial", subtitle: "ดูผลลัพธ์ของทั้งสองบอร์ด", slug: "serial-monitor" },
   { id: 11, title: "Data Simulation", subtitle: "จำลองการส่งข้อมูลไร้สาย", slug: "simulation" },
   { id: 12, title: "Missions", subtitle: "ภารกิจของแคมป์", slug: "missions" },
-  { id: 13, title: "Troubleshooting", subtitle: "แก้ปัญหาระบบ", slug: "troubleshooting" },
-  { id: 14, title: "Quiz", subtitle: "ทดสอบความเข้าใจ", slug: "quiz" },
-  { id: 15, title: "Final Challenge", subtitle: "ภารกิจสุดท้าย", slug: "final-challenge" },
+  { id: 13, title: "Troubleshoot", subtitle: "แก้ปัญหาระบบ", slug: "troubleshooting" },
+  { id: 14, title: "Final Challenge", subtitle: "ภารกิจสุดท้าย", slug: "final-challenge" },
 ];
