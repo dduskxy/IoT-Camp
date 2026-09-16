@@ -38,7 +38,7 @@ export function DataSimulationSlide() {
         </p>
       </div>
 
-      <div className="flex items-center justify-center space-x-12 w-full max-w-4xl p-8 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(59,130,246,0.3)] relative">
+      <div className="flex items-center justify-center space-x-12 w-full max-w-4xl p-4 md:p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(59,130,246,0.3)] relative">
         
         {/* Transmitter */}
         <div className="flex flex-col items-center space-y-4 z-10">
@@ -53,7 +53,7 @@ export function DataSimulationSlide() {
 
         {/* Wireless Path */}
         <div className="flex-1 h-1 bg-gray-700 relative flex items-center justify-center">
-          <Radio className="absolute -top-8 w-6 h-6 text-gray-500 animate-pulse" />
+          <Radio className="absolute -top-4 md:p-6 w-6 h-6 text-gray-500 animate-pulse" />
           
           {/* Animated Packet */}
           {isTransmitting && (

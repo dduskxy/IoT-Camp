@@ -178,7 +178,7 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center w-full max-w-6xl mx-auto p-4 md:p-8 relative z-10">
+      <main className="flex-1 flex flex-col items-center w-full max-w-6xl mx-auto p-4 md:p-4 md:p-6 relative z-10">
         <AnimatePresence mode="wait">
           <motion.div 
             key={currentStep}
@@ -192,12 +192,12 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
             <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent pointer-events-none"></div>
 
             {/* Content Header */}
-            <div className="px-8 pt-10 pb-6 md:px-12 md:pt-12 md:pb-8 relative z-10 border-b border-white/5">
+            <div className="px-6 py-4 md:px-8 md:py-6 relative z-10 border-b border-white/5">
               <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-4xl md:text-5xl font-black tracking-tight text-white"
+                className="text-2xl md:text-3xl font-black tracking-tight text-white"
               >
                 {slide.title}
               </motion.h1>
@@ -205,14 +205,14 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-lg md:text-xl text-slate-400 mt-3 font-medium"
+                className="text-sm md:text-base text-slate-400 mt-1 font-medium"
               >
                 {slide.subtitle}
               </motion.p>
             </div>
             
             {/* Actual Slide Content */}
-            <div className="flex-1 px-8 pb-10 md:px-12 md:pb-12 overflow-y-auto relative z-10 custom-scrollbar">
+            <div className="flex-1 px-6 py-4 md:px-8 md:py-6 overflow-y-auto relative z-10 custom-scrollbar">
               {children}
             </div>
           </motion.div>

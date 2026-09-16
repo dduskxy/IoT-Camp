@@ -7,16 +7,16 @@ export function TxVsRxSlide() {
   const [activeTab, setActiveTab] = useState<'TX' | 'RX' | null>(null);
 
   return (
-    <div className="flex flex-col h-full w-full p-8 text-white bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+    <div className="flex flex-col h-full w-full p-4 md:p-6 text-white bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
       <motion.h2 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-4xl font-bold text-center mb-8 text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]"
+        className="text-4xl font-bold text-center mb-4 text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]"
       >
         เปรียบเทียบหน้าที่ TX (ผู้ส่ง) และ RX (ผู้รับ)
       </motion.h2>
       
-      <div className="flex flex-row justify-center items-stretch gap-8 h-full">
+      <div className="flex flex-row justify-center items-stretch gap-4 md:p-6 h-full">
         {/* TX Side */}
         <motion.div 
           whileHover={{ scale: 1.02 }}

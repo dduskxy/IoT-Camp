@@ -22,15 +22,15 @@ export function CodeLabTxSlide() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full p-8 text-white bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+    <div className="flex flex-col h-full w-full p-4 md:p-6 text-white bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
       <div className="flex items-center gap-3 mb-6">
         <Code className="w-8 h-8 text-blue-400" />
         <h2 className="text-3xl font-bold text-blue-400">Code Lab: ฝั่งผู้ส่งข้อมูล (TX)</h2>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 h-full min-h-0">
+      <div className="flex flex-col md:flex-row gap-6 h-full min-h-0">
         {/* Left: Code Snippets */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2 pb-4">
+        <div className="w-full md:w-1/2 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2 pb-4">
           {TX_CODE_SECTIONS.map((section) => (
             <motion.div
               key={section.id}
@@ -50,7 +50,7 @@ export function CodeLabTxSlide() {
         </div>
 
         {/* Right: Explanation & Output/Wiring */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-6 min-h-0">
+        <div className="w-full md:w-1/2 flex flex-col gap-6 min-h-0">
           <motion.div 
             key={activeSection}
             initial={{ opacity: 0, x: 20 }}
@@ -106,7 +106,7 @@ export function CodeLabTxSlide() {
                     exit={{ opacity: 0 }}
                     className="flex flex-col items-center gap-6 py-4 transform scale-75 origin-top"
                   >
-                    <div className="flex justify-center gap-8 w-full">
+                    <div className="flex justify-center gap-4 md:p-6 w-full">
                       <NRF24L01 activeConnections={connections} />
                       <ArduinoUno activeConnections={Object.entries(connections).reduce((acc, [k, v]) => ({...acc, [v]: k}), {})} />
                     </div>

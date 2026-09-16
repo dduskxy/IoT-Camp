@@ -97,7 +97,7 @@ export function WhatIsIoTSlide() {
       </div>
 
       {/* Info Card */}
-      <div className="w-full h-40 mt-12 perspective-[1000px]">
+      <div className="w-full h-40 mt-6 perspective-[1000px]">
         <AnimatePresence mode="wait">
           {activeNode ? (
             <motion.div
@@ -106,7 +106,7 @@ export function WhatIsIoTSlide() {
               animate={{ opacity: 1, rotateX: 0, y: 0 }}
               exit={{ opacity: 0, rotateX: 20, y: -20 }}
               transition={{ duration: 0.4, type: "spring" }}
-              className={`w-full h-full p-8 rounded-3xl border border-white/10 ${nodes.find(n => n.id === activeNode)?.bg} flex flex-col items-center justify-center text-center backdrop-blur-md ${nodes.find(n => n.id === activeNode)?.shadow}`}
+              className={`w-full h-full p-4 md:p-6 rounded-3xl border border-white/10 ${nodes.find(n => n.id === activeNode)?.bg} flex flex-col items-center justify-center text-center backdrop-blur-md ${nodes.find(n => n.id === activeNode)?.shadow}`}
             >
               <h3 className={`text-2xl font-black mb-3 ${nodes.find(n => n.id === activeNode)?.color}`}>
                 {nodes.find(n => n.id === activeNode)?.title}
@@ -121,7 +121,7 @@ export function WhatIsIoTSlide() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="w-full h-full p-8 rounded-3xl border border-white/5 bg-white/[0.02] flex items-center justify-center text-slate-500 font-medium"
+              className="w-full h-full p-4 md:p-6 rounded-3xl border border-white/5 bg-white/[0.02] flex items-center justify-center text-slate-500 font-medium"
             >
               เลือกระบบด้านบนเพื่อดูรายละเอียดการทำงาน
             </motion.div>

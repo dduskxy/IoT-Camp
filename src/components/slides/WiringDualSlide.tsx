@@ -5,15 +5,15 @@ import { RadioTower, Send, Smartphone } from "lucide-react";
 export function WiringDualSlide() {
   return (
     <div className="w-full h-full p-6 flex flex-col justify-center bg-transparent text-white font-sans">
-      <div className="text-center mb-10">
+      <div className="text-center mb-6">
         <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">ระบบสื่อสาร 2 ฝั่ง (TX & RX)</h2>
         <p className="text-gray-400 mt-2">ภาพรวมการเชื่อมต่อระบบ IoT เต็มรูปแบบ</p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8 items-center justify-center max-w-6xl mx-auto w-full">
+      <div className="flex flex-col md:flex-row gap-4 md:p-6 items-center justify-center max-w-6xl mx-auto w-full">
         {/* TX Node (Transmitter) */}
         <motion.div 
-          className="flex-1 bg-white/5 border border-blue-500/20 rounded-3xl p-8 backdrop-blur-md shadow-[0_0_40px_rgba(59,130,246,0.1)] relative overflow-hidden"
+          className="flex-1 bg-white/5 border border-blue-500/20 rounded-3xl p-4 md:p-6 backdrop-blur-md shadow-[0_0_40px_rgba(59,130,246,0.1)] relative overflow-hidden"
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
         >
@@ -69,7 +69,7 @@ export function WiringDualSlide() {
 
         {/* RX Node (Receiver) */}
         <motion.div 
-          className="flex-1 bg-white/5 border border-pink-500/20 rounded-3xl p-8 backdrop-blur-md shadow-[0_0_40px_rgba(236,72,153,0.1)] relative overflow-hidden"
+          className="flex-1 bg-white/5 border border-pink-500/20 rounded-3xl p-4 md:p-6 backdrop-blur-md shadow-[0_0_40px_rgba(236,72,153,0.1)] relative overflow-hidden"
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
         >

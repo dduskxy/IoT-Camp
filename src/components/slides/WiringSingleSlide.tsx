@@ -64,16 +64,16 @@ export function WiringSingleSlide() {
 
   return (
     <div className="w-full h-full flex flex-col bg-transparent text-white font-sans">
-      <div className="text-center mb-8">
+      <div className="text-center mb-4">
         <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
           Wiring Simulator: Arduino ↔ NRF24L01
         </h2>
         <p className="text-gray-400 mt-2 text-lg">Click a pin on the NRF24L01, then click the matching pin on the Arduino Uno.</p>
       </div>
 
-      <div className="flex-1 flex flex-col gap-8 justify-start items-center w-full">
+      <div className="flex-1 flex flex-col gap-4 md:p-6 justify-start items-center w-full">
         {/* Hardware Row */}
-        <div className="flex flex-col md:flex-row justify-center items-center gap-12 w-full">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-6 w-full">
           {/* NRF24L01 Side */}
           <div className="flex flex-col items-center">
             <h3 className="text-xl font-bold mb-4 text-purple-400">1. Select NRF24 Pin</h3>

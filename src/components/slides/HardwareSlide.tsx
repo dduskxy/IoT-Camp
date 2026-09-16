@@ -17,11 +17,11 @@ export function HardwareSlide() {
     <div className="w-full h-full flex flex-col md:flex-row gap-6 p-6 bg-transparent text-white font-sans">
       {/* Board Layout (Simplified) */}
       <motion.div 
-        className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-md relative shadow-[0_0_30px_rgba(59,130,246,0.1)]"
+        className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 backdrop-blur-md relative shadow-[0_0_30px_rgba(59,130,246,0.1)]"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
       >
-        <h2 className="text-2xl font-bold mb-8 text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]">ส่วนประกอบบอร์ดไมโครคอนโทรลเลอร์</h2>
+        <h2 className="text-2xl font-bold mb-4 text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]">ส่วนประกอบบอร์ดไมโครคอนโทรลเลอร์</h2>
         
         <div className="grid grid-cols-2 gap-4">
           {PINS.map((pin) => {
@@ -53,7 +53,7 @@ export function HardwareSlide() {
 
       {/* Details Panel */}
       <motion.div 
-        className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-md"
+        className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 backdrop-blur-md"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
       >

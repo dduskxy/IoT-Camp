@@ -15,8 +15,8 @@ export function TroubleshootingSlide() {
   const [activeStep, setActiveStep] = useState(1);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full text-white p-8">
-      <div className="text-center mb-10 flex flex-col items-center">
+    <div className="flex flex-col items-center justify-center w-full h-full text-white p-4 md:p-6">
+      <div className="text-center mb-6 flex flex-col items-center">
         <div className="p-4 bg-orange-500/20 rounded-full mb-4 shadow-[0_0_30px_rgba(249,115,22,0.3)]">
           <AlertTriangle className="w-12 h-12 text-orange-400" />
         </div>
@@ -65,7 +65,7 @@ export function TroubleshootingSlide() {
             key={activeStep}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="h-full bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-md flex flex-col justify-center relative overflow-hidden"
+            className="h-full bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 backdrop-blur-md flex flex-col justify-center relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 p-10 opacity-5">
               <Wrench className="w-48 h-48" />
@@ -75,7 +75,7 @@ export function TroubleshootingSlide() {
               <h3 className="text-3xl font-bold text-white mb-4">
                 Step {activeStep}: {steps.find(s => s.id === activeStep)?.title}
               </h3>
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+              <p className="text-xl text-gray-300 mb-4 leading-relaxed">
                 {steps.find(s => s.id === activeStep)?.desc}
               </p>
               
