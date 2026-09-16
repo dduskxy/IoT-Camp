@@ -6,10 +6,157 @@ import { ArduinoUno } from '../hardware/ArduinoUno';
 import { NRF24L01 } from '../hardware/NRF24L01';
 
 const RX_CODE_SECTIONS = [
-  { id: 'libs', title: '1. Libraries', code: `#include <SPI.h>\n#include <nRF24L01.h>\n#include <RF24.h>`, explanation: 'เรียกใช้ไลบรารีแบบเดียวกับฝั่งส่ง เพื่อให้คุยภาษาเดียวกัน' },
-  { id: 'pins', title: '2. Pins & Init', code: `RF24 radio(9, 10); // CE, CSN\nconst byte address[6] = "00001";`, explanation: 'ตั้งค่าขาและชื่อท่อ (Address) ให้ตรงกับฝั่งส่งเป๊ะๆ' },
-  { id: 'setup', title: '3. Setup', code: `void setup() {\n  Serial.begin(9600);\n  radio.begin();\n  radio.openReadingPipe(0, address);\n  radio.startListening();\n}`, explanation: 'เปิด Serial Monitor และบอกวิทยุว่า "ฉันคือผู้ฟัง (เปิดหูรับฟังตลอดเวลา)"' },
-  { id: 'loop', title: '4. Loop (Receive)', code: `void loop() {\n  if (radio.available()) {\n    char text[32] = "";\n    radio.read(&text, sizeof(text));\n    Serial.println(text);\n  }\n}`, explanation: 'เช็คตลอดเวลาว่ามีข้อมูลลอยมาในอากาศไหม ถ้ามีก็รับมาเก็บแล้วปรินต์ออกจอ' }
+  { id: 'libs', title: '1. Config & Libraries', code: `/*
+ * receiver.ino
+ * 
+ * NRF24L01 Wireless Receiver Node for Hand Gesture RGB LED System
+ * (1 Transmitter ➔ 3 Receivers Architecture)
+ * 
+ * Hardware Connections:
+ *   [Grove Chainable RGB LED - P9813]
+ *   - VCC  -> Arduino 5V
+ *   - GND  -> Arduino GND
+ *   - CLK  -> Arduino Pin D2
+ *   - DATA -> Arduino Pin D3
+ * 
+ *   [NRF24L01 Wireless Transceiver Module]
+ *   - VCC  -> Arduino 3.3V (⚠️ ห้ามต่อ 5V! แนะนำต่อ Capacitor 10uF-100uF คร่อม VCC/GND เพื่อความเสถียร)
+ *   - GND  -> Arduino GND
+ *   - CE   -> Arduino Pin D9
+ *   - CSN  -> Arduino Pin D10
+ *   - SCK  -> Arduino Pin D13 (Hardware SPI)
+ *   - MOSI -> Arduino Pin D11 (Hardware SPI)
+ *   - MISO -> Arduino Pin D12 (Hardware SPI)
+ *   - IRQ  -> ไม่ได้ใช้งาน (Unused)
+ * 
+ * 1-to-3 Broadcast Setup:
+ *   - AutoAck is DISABLED (radio.setAutoAck(false)) to prevent 3 receivers
+ *     from sending conflicting ACK packets simultaneously (RF Collision).
+ *   - Both Grove Chainable LED and PC Web Serial (index.html) are synced in real-time.
+ */
+
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+#include <printf.h>
+
+#define CE_PIN   9
+#define CSN_PIN  10
+
+RF24 radio(CE_PIN, CSN_PIN);
+const byte rfAddress[6] = "00001";
+const uint8_t rfChannel = 76; // Default RF channel for consistent multi-node sync
+
+// Grove Chainable LED (P9813) pins
+const int clkPin  = 2;
+const int dataPin = 3;
+
+// Global state tracking
+int currentFingerCount = 0;
+
+// Bit-bang sending a single 8-bit byte to P9813
+void sendByte(uint8_t b) {
+  for (int i = 7; i >= 0; i--) {
+    digitalWrite(dataPin, (b >> i) & 0x01);
+    digitalWrite(clkPin, LOW);
+    digitalWrite(clkPin, HIGH);
+  }
+}
+
+// Set RGB LED color using P9813 transmission protocol
+void setColor(uint8_t r, uint8_t g, uint8_t b) {
+  for (int i = 0; i < 4; i++) sendByte(0x00);
+  uint8_t checksum = 0xC0;
+  checksum |= ((~b >> 6) & 0x03) << 4;
+  checksum |= ((~g >> 6) & 0x03) << 2;
+  checksum |= ((~r >> 6) & 0x03);
+  sendByte(checksum);
+  sendByte(b);
+  sendByte(g);
+  sendByte(r);
+  for (int i = 0; i < 4; i++) sendByte(0x00);
+}
+
+// Helper to apply colors based on finger count (0 to 10)
+void applyFingerColor(int count) {
+  switch (count) {
+    case 0:  setColor(0, 0, 0);       Serial.println(F("ACK: 0 Fingers -> LED OFF")); break;
+    case 1:  setColor(255, 0, 0);     Serial.println(F("ACK: 1 Finger -> RED")); break;
+    case 2:  setColor(0, 255, 0);     Serial.println(F("ACK: 2 Fingers -> GREEN")); break;
+    case 3:  setColor(0, 0, 255);     Serial.println(F("ACK: 3 Fingers -> BLUE")); break;
+    case 4:  setColor(255, 255, 0);   Serial.println(F("ACK: 4 Fingers -> YELLOW")); break;
+    case 5:  setColor(180, 0, 255);   Serial.println(F("ACK: 5 Fingers -> PURPLE")); break;
+    case 6:  setColor(0, 255, 255);   Serial.println(F("ACK: 6 Fingers -> CYAN")); break;
+    case 7:  setColor(255, 128, 0);   Serial.println(F("ACK: 7 Fingers -> ORANGE")); break;
+    case 8:  setColor(255, 20, 147);  Serial.println(F("ACK: 8 Fingers -> PINK")); break;
+    case 9:  setColor(128, 255, 0);   Serial.println(F("ACK: 9 Fingers -> LIME")); break;
+    case 10: setColor(255, 255, 255); Serial.println(F("ACK: 10 Fingers -> WHITE")); break;
+    default: break;
+  }
+}`, explanation: 'ตั้งค่าไลบรารีและตัวแปรสำหรับ NRF24L01 ฝั่งรับ และ P9813 LED' },
+  { id: 'setup', title: '2. Setup', code: `void setup() {
+Serial.begin(115200);
+  while (!Serial && millis() < 3000) {}
+
+  pinMode(clkPin, OUTPUT);
+  pinMode(dataPin, OUTPUT);
+  digitalWrite(clkPin, LOW);
+  digitalWrite(dataPin, LOW);
+  setColor(0, 0, 0);
+
+  printf_begin();
+  Serial.println(F("========================================"));
+  Serial.println(F("Testing NRF24L01 Receiver (Multi-Node)..."));
+
+  if (!radio.begin()) {
+    Serial.println(F("ERROR: NRF24L01 hardware not responding!"));
+    Serial.println(F("Please check wiring: CE->9, CSN->10, SCK->13, MOSI->11, MISO->12, VCC->3.3V, GND->GND"));
+    while (1) {}
+  }
+
+  Serial.println(F("SUCCESS: NRF24L01 found on Receiver Node!"));
+  radio.printPrettyDetails();
+  Serial.println(F("========================================"));
+
+  // RF24 configuration for Multi-Receiver Broadcast
+  radio.setAutoAck(false);            // ปิด Auto-ACK เพื่อไม่ให้ชนกับเครื่องรับอื่น
+  radio.setChannel(rfChannel);        // ล็อคช่องสัญญาณ 76 ให้ตรงกับตัวส่ง
+  radio.openReadingPipe(1, rfAddress);
+  radio.setPALevel(RF24_PA_LOW);
+  radio.setDataRate(RF24_1MBPS);
+  radio.startListening();
+
+  Serial.println(F("RECEIVER_READY: Listening for RF24 broadcast from transmitter..."));
+}`, explanation: 'เริ่มต้นการทำงานของ Hardware และตั้งค่า NRF24L01 เป็นโหมดรับ (Receiver)' },
+  { id: 'loop', title: '3. Loop', code: `void loop() {
+// 1. ตรวจสอบข้อมูลไร้สายที่ได้รับจาก NRF24L01 (จากเครื่องส่ง)
+  if (radio.available()) {
+    int receivedCount = -1;
+    radio.read(&receivedCount, sizeof(receivedCount));
+
+    if (receivedCount >= 0 && receivedCount <= 10) {
+      if (receivedCount != currentFingerCount) {
+        currentFingerCount = receivedCount;
+        
+        // อัปเดตสีไฟ Grove Chainable LED ที่บอร์ดนี้
+        applyFingerColor(currentFingerCount);
+
+        // ส่ง Protocol ไปยัง Web Serial ให้หน้าเว็บของเครื่องรับอัปเดตสีและจำนวนนิ้วทันที
+        Serial.print(F("SYNC:"));
+        Serial.println(currentFingerCount);
+      }
+    }
+  }
+
+  // 2. ตอบกลับสถานะปัจจุบันเมื่อหน้าเว็บเครื่องรับขอเข้ามา (เช่น เมื่อเพิ่งกด Connect Serial)
+  while (Serial.available() > 0) {
+    char c = Serial.read();
+    if (c == '?' || c == 'S') {
+      Serial.print(F("SYNC:"));
+      Serial.println(currentFingerCount);
+    }
+  }
+}`, explanation: 'รอรับข้อมูลจาก Transmitter และปรับเปลี่ยนสี LED ตามที่ได้รับทันที' }
 ];
 
 const WIRE_COLORS: Record<string, string> = {
