@@ -7,15 +7,7 @@ import { Globe, Cpu, Wifi, Smartphone } from "lucide-react";
 export function WhatIsIoTSlide() {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full max-w-5xl mx-auto space-y-10 pt-4">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center space-y-4 mb-8"
-      >
-        <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-          Internet of Things (IoT) คืออะไร?
-        </h2>
-      </motion.div>
+      
 
       <motion.div 
         initial={{ opacity: 0, scale: 0.9 }}

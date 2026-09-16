@@ -7,25 +7,9 @@ import { Trophy, Radio, Lightbulb, MonitorCheck, ArrowRight } from 'lucide-react
 export function FinalChallengeSlide() {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full text-white">
-      <motion.div 
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", bounce: 0.5 }}
-        className="mb-8"
-      >
-        <div className="w-24 h-24 bg-yellow-500/20 rounded-full flex items-center justify-center border-2 border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.5)]">
-          <Trophy className="w-12 h-12 text-yellow-400" />
-        </div>
-      </motion.div>
+      
 
-      <div className="text-center mb-12">
-        <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]">
-          ภารกิจฐาน IoT สำเร็จ! 🎉
-        </h2>
-        <p className="text-xl md:text-2xl text-gray-300 mt-4">
-          ยินดีด้วย! คุณได้สร้างระบบสื่อสารไร้สาย 1-to-Many ด้วยมือตัวเอง
-        </p>
-      </div>
+      
 
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
         

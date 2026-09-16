@@ -16,17 +16,7 @@ export function TroubleshootingSlide() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full text-white">
-      <div className="text-center mb-6 flex flex-col items-center">
-        <div className="p-4 bg-orange-500/20 rounded-full mb-4 shadow-[0_0_30px_rgba(249,115,22,0.3)]">
-          <AlertTriangle className="w-12 h-12 text-orange-400" />
-        </div>
-        <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">
-          การแก้ปัญหาเบื้องต้น (Troubleshooting)
-        </h2>
-        <p className="text-xl text-gray-300 mt-2">
-          ถ้า NRF24L01 ไม่ทำงาน ลองเช็คตามขั้นตอนเหล่านี้
-        </p>
-      </div>
+      
 
       <div className="flex w-full max-w-5xl space-x-8">
         {/* Steps List */}

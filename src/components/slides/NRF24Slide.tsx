@@ -20,10 +20,7 @@ export function NRF24Slide() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">การเชื่อมต่อ NRF24L01 (SPI Protocol)</h2>
-          <p className="text-gray-400 mt-2">โมดูลสื่อสารไร้สาย 2.4GHz</p>
-        </div>
+        
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
           {/* Microcontroller */}

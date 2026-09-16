@@ -23,9 +23,7 @@ export function HardwareSlide() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
       >
-        <h2 className="text-3xl font-bold mb-6 text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]">
-          อุปกรณ์ที่ต้องใช้ในฐานนี้
-        </h2>
+        
         
         <div className="grid grid-cols-1 gap-3 overflow-y-auto custom-scrollbar pr-2 flex-1">
           {EQUIPMENTS.map((eq) => {

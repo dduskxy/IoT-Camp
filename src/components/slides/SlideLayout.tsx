@@ -53,7 +53,7 @@ export function SlideLayout({
               >
                 {/* Clean, Readable Header */}
                 <div className="mb-4 md:mb-6 text-center md:text-left shrink-0">
-                  <h2 className="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tight">{slide.title}</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-2 drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]">{slide.title}</h2>
                   <p className="text-lg text-slate-400">{slide.subtitle}</p>
                 </div>
 

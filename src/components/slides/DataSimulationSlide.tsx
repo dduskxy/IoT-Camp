@@ -68,14 +68,7 @@ export function DataSimulationSlide() {
 
   return (
     <div className="flex flex-col items-center justify-start w-full h-full text-white">
-      <div className="text-center space-y-2 mb-4 mt-4 shrink-0">
-        <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
-          จำลองการส่งข้อมูล (Data Simulation)
-        </h2>
-        <p className="text-lg text-gray-400">
-          เห็นภาพชัดๆ ว่าข้อมูลจากมือเรา วิ่งไปเปลี่ยนสีไฟได้อย่างไร
-        </p>
-      </div>
+      
 
       {/* Main Simulation Area */}
       <div className="w-full flex-1 min-h-0 flex flex-col items-center justify-center relative bg-[#0a0f1c] rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] inset-0 overflow-hidden">

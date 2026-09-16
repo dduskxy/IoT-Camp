@@ -92,18 +92,7 @@ export function WiringSingleSlide() {
 
   return (
     <div className="w-full h-full flex flex-col bg-transparent text-white font-sans">
-      <div className="text-center mb-4 flex flex-col items-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-          ขั้นตอนการต่อวงจร (Step-by-Step Wiring)
-        </h2>
-        <p className="text-gray-400 mt-1 text-sm md:text-base mb-3">ทำตามทีละขั้นตอน เพื่อป้องกันอุปกรณ์พัง</p>
-        <button 
-          onClick={() => setShowReference(!showReference)} 
-          className={`flex items-center gap-2 text-sm px-4 py-1.5 rounded-full transition-colors border ${showReference ? 'bg-blue-500 text-white border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.5)]' : 'bg-blue-500/20 text-blue-300 border-blue-500/30 hover:bg-blue-500/30'}`}
-        >
-          <ImageIcon size={16} /> {showReference ? 'ซ่อนภาพวงจรต้นแบบ' : 'ดูภาพวงจรต้นแบบ'}
-        </button>
-      </div>
+      
 
       <AnimatePresence>
         {showReference && (

@@ -23,21 +23,7 @@ export function MissionsSlide() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full text-white">
-      <div className="text-center mb-6">
-        <motion.div 
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="inline-flex items-center justify-center p-4 bg-orange-500/20 rounded-full mb-4 shadow-[0_0_30px_rgba(249,115,22,0.3)]"
-        >
-          <Rocket className="w-12 h-12 text-orange-400" />
-        </motion.div>
-        <h2 className="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">
-          Pre-Flight Checklist 🚀
-        </h2>
-        <p className="text-base md:text-xl text-gray-300 mt-2">
-          ก่อนเสียบปลั๊กและอัปโหลดโค้ด ให้นักเรียนตรวจสอบลิสต์เหล่านี้กับบอร์ดจริงของตัวเอง!
-        </p>
-      </div>
+      
 
       <div className="w-full max-w-3xl space-y-3">
         {missions.map((mission, index) => {
