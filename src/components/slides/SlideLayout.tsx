@@ -32,48 +32,17 @@ export function SlideLayout({
 
   if (!isMounted) return <div className="min-h-screen bg-[#0B0F19]" />;
 
-  const progressPercentage = (currentStep / totalSlides) * 100;
-
   return (
     <div className="flex flex-col h-screen w-full bg-[#0B0F19] text-slate-200 font-sans overflow-hidden">
       
-      {/* Top Navigation Bar - Web App Style */}
-      <header className="h-16 shrink-0 bg-[#111827]/80 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-4 md:px-8 z-30">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center">
-            <GraduationCap size={24} />
-          </div>
-          <div className="hidden sm:block">
-            <h1 className="font-bold text-white tracking-wide">IoT Masterclass</h1>
-            <p className="text-xs text-blue-300 font-medium">Interactive Guide</p>
-          </div>
-        </div>
-
-        {/* Progress Bar (Center) */}
-        <div className="hidden md:flex flex-col items-center w-1/3">
-          <div className="flex items-center justify-between w-full mb-1">
-            <span className="text-xs font-semibold text-slate-400">ความคืบหน้า (Progress)</span>
-            <span className="text-xs font-bold text-blue-400">{Math.round(progressPercentage)}%</span>
-          </div>
-          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-            <motion.div 
-              className="h-full bg-gradient-to-r from-blue-500 to-emerald-400"
-              initial={{ width: 0 }}
-              animate={{ width: `${progressPercentage}%` }}
-              transition={{ duration: 0.5 }}
-            />
-          </div>
-        </div>
-
-        {/* Hamburger Menu (Mobile) & TOC (Desktop) */}
-        <button 
-          onClick={() => setIsSidebarOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors border border-white/10"
-        >
-          <BookOpen size={18} className="text-blue-400" />
-          <span className="hidden sm:inline text-sm font-medium">สารบัญบทเรียน</span>
-        </button>
-      </header>
+      {/* Floating TOC Button */}
+      <button 
+        onClick={() => setIsSidebarOpen(true)}
+        className="fixed top-4 right-4 md:top-6 md:right-8 z-40 flex items-center gap-2 px-4 py-2 bg-[#111827]/80 hover:bg-[#1f2937]/90 backdrop-blur-md rounded-full transition-colors border border-white/10 shadow-[0_0_15px_rgba(0,0,0,0.5)] text-slate-300"
+      >
+        <BookOpen size={16} className="text-blue-400" />
+        <span className="hidden sm:inline text-sm font-medium">สารบัญบทเรียน</span>
+      </button>
 
       {/* Main Content Area */}
       <div className="flex-1 flex overflow-hidden relative">
