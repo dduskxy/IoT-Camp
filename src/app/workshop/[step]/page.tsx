@@ -1,7 +1,21 @@
 import { notFound } from "next/navigation";
 import { SlideLayout } from "@/components/slides/SlideLayout";
 import { workshopSlides } from "@/data/workshop";
+
+// Slide Components
 import { WhatIsIoTSlide } from "@/components/slides/WhatIsIoTSlide";
+import { HardwareSlide } from "@/components/slides/HardwareSlide";
+import { NRF24Slide } from "@/components/slides/NRF24Slide";
+import { WiringSingleSlide } from "@/components/slides/WiringSingleSlide";
+import { TxVsRxSlide } from "@/components/slides/TxVsRxSlide";
+import { WiringDualSlide } from "@/components/slides/WiringDualSlide";
+import { CodeLabTxSlide } from "@/components/slides/CodeLabTxSlide";
+import { CodeLabRxSlide } from "@/components/slides/CodeLabRxSlide";
+import { DualSerialSlide } from "@/components/slides/DualSerialSlide";
+import { DataSimulationSlide } from "@/components/slides/DataSimulationSlide";
+import { MissionsSlide } from "@/components/slides/MissionsSlide";
+import { TroubleshootingSlide } from "@/components/slides/TroubleshootingSlide";
+import { FinalChallengeSlide } from "@/components/slides/FinalChallengeSlide";
 
 export function generateStaticParams() {
   return workshopSlides.map((slide) => ({
@@ -59,6 +73,30 @@ export default async function WorkshopPage({ params }: { params: Promise<{ step:
         );
       case 2:
         return <WhatIsIoTSlide />;
+      case 3:
+        return <HardwareSlide />;
+      case 4:
+        return <NRF24Slide />;
+      case 5:
+        return <WiringSingleSlide />;
+      case 6:
+        return <TxVsRxSlide />;
+      case 7:
+        return <WiringDualSlide />;
+      case 8:
+        return <CodeLabTxSlide />;
+      case 9:
+        return <CodeLabRxSlide />;
+      case 10:
+        return <DualSerialSlide />;
+      case 11:
+        return <DataSimulationSlide />;
+      case 12:
+        return <MissionsSlide />;
+      case 13:
+        return <TroubleshootingSlide />;
+      case 14:
+        return <FinalChallengeSlide />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-full space-y-6 text-center pt-20">
