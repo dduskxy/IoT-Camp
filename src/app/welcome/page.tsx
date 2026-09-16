@@ -328,42 +328,94 @@ function TimelineSection({ onBack }: { onBack: () => void }) {
 }
 
 function BriefSection({ onBack }: { onBack: () => void }) {
+  const [step, setStep] = React.useState(0);
+
+  const slides = [
+    {
+      title: "ยินดีต้อนรับเข้าสู่ค่าย",
+      highlight: "IoT & AUTOMATION MISSION 2026",
+      text: "พร้อมที่จะเริ่มต้นภารกิจกันหรือยัง?"
+    },
+    {
+      title: "หลายคนอาจจะสงสัยว่า",
+      highlight: "\"ทำไมเราต้องมารู้จัก IoT?\"",
+      text: "และ \"เรามาทำอะไรกันที่นี่?\""
+    },
+    {
+      title: "ในยุคนี้",
+      highlight: "Internet of Things (IoT)",
+      text: "ไม่ใช่แค่เรื่องของอนาคตอีกต่อไป แต่มันคือสิ่งที่มีผลกับชีวิตเราในทุกๆ วัน"
+    },
+    {
+      title: "ทุกอย่างกำลังถูกเชื่อมต่อกัน",
+      highlight: "ผ่านอินเทอร์เน็ต",
+      text: "ตั้งแต่สมาร์ทโฟน สมาร์ทโฮม ระบบการเกษตรอัจฉริยะ ไปจนถึงเทคโนโลยีทางการแพทย์"
+    },
+    {
+      title: "ค่ายในวันนี้ ไม่ใช่แค่เพื่อให้เรานั่งฟัง",
+      highlight: "แต่เพื่อให้พวกเราได้ \"ลงมือทำ\"",
+      text: "ได้ลองต่อวงจร ได้ลองเขียนโค้ดสั่งการมันด้วยตัวเอง"
+    },
+    {
+      title: "เพื่อให้เราเข้าใจ",
+      highlight: "เบื้องหลังเทคโนโลยีล้ำๆ",
+      text: "ว่ามันทำงานยังไง และตัวเราเองก็สามารถสร้างมันขึ้นมาได้เช่นกัน"
+    },
+    {
+      title: "เทคโนโลยีไม่ได้มีไว้เพื่อให้เราเป็นแค่ผู้ใช้งาน",
+      highlight: "แต่มันมีไว้เพื่อให้เราเป็น \"ผู้สร้าง\"",
+      text: "ขอให้ทุกคนสนุกกับการเรียนรู้และทำภารกิจในวันนี้นะครับ!"
+    }
+  ];
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      className="max-w-2xl mx-auto w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 z-50 bg-[#050505] flex flex-col justify-center items-center px-6 md:px-20 text-center"
+      onClick={() => {
+        if (step < slides.length - 1) setStep(step + 1);
+        else onBack();
+      }}
     >
-      <button onClick={onBack} className="mb-6 flex items-center text-white/50 hover:text-white transition-colors">
-        <ChevronRight className="w-4 h-4 mr-1 rotate-180" />
-        กลับหน้าแรก
-      </button>
-
-      <h2 className="text-3xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-        ทำไมเราถึงมาอยู่ที่นี่?
-      </h2>
-
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-md space-y-6 text-white/80 leading-relaxed text-sm md:text-base">
-        <p>
-          สวัสดีครับน้องๆ ทุกคน ยินดีต้อนรับเข้าสู่ค่าย <strong>IoT & AUTOMATION MISSION 2026</strong> นะครับ!
-        </p>
-        <p>
-          หลายคนอาจจะสงสัยว่า <span className="text-blue-300">"ทำไมเราต้องมารู้จัก IoT?"</span> และ <span className="text-blue-300">"เรามาทำอะไรกันที่นี่?"</span>
-        </p>
-        <p>
-          ในยุคนี้ <strong>Internet of Things (IoT)</strong> ไม่ใช่แค่เรื่องของอนาคตอีกต่อไป แต่มันคือสิ่งที่มีผลกับชีวิตเราในทุกๆ วัน ตั้งแต่สมาร์ทโฟนที่เราใช้ สมาร์ทโฮม ระบบการเกษตรอัจฉริยะ ไปจนถึงเทคโนโลยีทางการแพทย์ ทุกอย่างกำลังถูกเชื่อมต่อเข้าด้วยกันผ่านอินเทอร์เน็ต
-        </p>
-        <p>
-          ค่ายในวันนี้ถูกจัดขึ้นมา ไม่ใช่แค่เพื่อให้เรานั่งฟังบรรยาย แต่เพื่อให้พวกเราได้ <strong>"ลงมือทำ"</strong> ได้ลองต่อวงจร ได้ลองเขียนโค้ดสั่งการมันด้วยตัวเอง เพื่อให้เราเข้าใจว่าเบื้องหลังเทคโนโลยีล้ำๆ เหล่านี้ มันทำงานยังไง และตัวเราเองก็สามารถสร้างมันขึ้นมาได้เช่นกัน
-        </p>
-        <p className="pt-4 border-t border-white/10 text-cyan-200 font-mono text-center text-lg mt-4 font-bold">
-          "เทคโนโลยีไม่ได้มีไว้เพื่อให้เราเป็นแค่ผู้ใช้งาน<br/>แต่มันมีไว้เพื่อให้เราเป็นผู้สร้าง"
-        </p>
-        <p className="text-center text-white/50 text-sm mt-2">
-          ขอให้ทุกคนสนุกกับการเรียนรู้และทำภารกิจในวันนี้นะครับ!
-        </p>
+      <div className="absolute top-8 left-8">
+        <button onClick={(e) => { e.stopPropagation(); onBack(); }} className="text-white/50 hover:text-white flex items-center transition bg-white/5 px-4 py-2 rounded-full border border-white/10">
+          <ChevronRight className="w-5 h-5 rotate-180 mr-1" />
+          ออกจากการนำเสนอ
+        </button>
       </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 1.1, y: -20 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-5xl"
+        >
+          <h3 className="text-2xl md:text-4xl text-white/70 mb-4 md:mb-6 font-medium">
+            {slides[step].title}
+          </h3>
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8 md:mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 drop-shadow-[0_0_30px_rgba(59,130,246,0.3)] leading-tight">
+            {slides[step].highlight}
+          </h2>
+          <p className="text-xl md:text-3xl text-white/80 leading-relaxed font-light">
+            {slides[step].text}
+          </p>
+        </motion.div>
+      </AnimatePresence>
+
+      <div className="absolute bottom-12 flex space-x-3">
+        {slides.map((_, i) => (
+          <div key={i} className={`h-2 rounded-full transition-all duration-500 ${i === step ? 'w-12 bg-blue-500' : 'w-2 bg-white/20'}`} />
+        ))}
+      </div>
+      
+      <p className="absolute bottom-4 text-white/30 text-sm animate-pulse">
+        คลิกที่ใดก็ได้เพื่อไปยังหน้าถัดไป
+      </p>
     </motion.div>
   );
 }
