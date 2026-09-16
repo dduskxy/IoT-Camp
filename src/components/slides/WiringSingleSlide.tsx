@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCcw, XCircle, Info, ChevronRight, AlertTriangle, Zap, CheckCircle2 } from 'lucide-react';
+import { RefreshCcw, XCircle, Info, ChevronRight, AlertTriangle, Zap, CheckCircle2, Image as ImageIcon } from 'lucide-react';
 import { ArduinoUno } from "../hardware/ArduinoUno";
 import { NRF24L01, NRF_PINS } from "../hardware/NRF24L01";
 
@@ -29,22 +29,22 @@ const WIRE_COLORS: Record<string, string> = {
 const STEPS = [
   {
     id: 1,
-    title: 'ขั้นที่ 1: สายไฟเลี้ยงบอร์ด (Power)',
-    desc: 'สำคัญที่สุด! NRF24L01 รับไฟได้แค่ 3.3V เท่านั้น ห้ามต่อเข้า 5V เด็ดขาด บอร์ดจะพังทันที',
+    title: 'ขั้นที่ 1: สายพลังงาน (Power)',
+    desc: 'สำคัญที่สุด! NRF24L01 รับไฟ 3.3V เท่านั้น (ห้าม 5V เด็ดขาด บอร์ดจะพังทันที)',
     requiredPins: ['VCC', 'GND'],
     icon: <AlertTriangle className="text-red-400" />
   },
   {
     id: 2,
-    title: 'ขั้นที่ 2: ถนนส่งข้อมูล (SPI Bus)',
-    desc: 'สาย 3 เส้นนี้ทำหน้าที่เป็นถนนความเร็วสูงให้ข้อมูลวิ่งไปมาระหว่าง Arduino กับ NRF24',
+    title: 'ขั้นที่ 2: สายส่งข้อมูล (SPI Bus)',
+    desc: 'ทั้ง 3 เส้นทำหน้าที่เป็นถนนความเร็วสูงระหว่าง Arduino กับ NRF24',
     requiredPins: ['MOSI', 'MISO', 'SCK'],
     icon: <Zap className="text-blue-400" />
   },
   {
     id: 3,
-    title: 'ขั้นที่ 3: สายสั่งการ (Control Pins)',
-    desc: 'สายสำหรับสั่งให้ชิปเปิด/ปิดการรับส่งสัญญาณ (CE) และเลือกชิปเป้าหมาย (CSN)',
+    title: 'ขั้นที่ 3: สายควบคุม (Control Pins)',
+    desc: 'สำหรับเปิด/ปิดรับสัญญาณ (CE) และเลือกชิป (CSN)',
     requiredPins: ['CE', 'CSN'],
     icon: <Info className="text-orange-400" />
   }
@@ -53,41 +53,37 @@ const STEPS = [
 export function WiringSingleSlide() {
   const [connections, setConnections] = useState<Record<string, string>>({});
   const [selectedNrfPin, setSelectedNrfPin] = useState<string | null>(null);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
+  const [showReference, setShowReference] = useState(false);
 
-  const handleNrfClick = (pin: string) => {
-    setSelectedNrfPin(selectedNrfPin === pin ? null : pin);
-  };
+  const handleNrfClick = (pin: string) => setSelectedNrfPin(pin === selectedNrfPin ? null : pin);
 
   const handleCtrlClick = (pin: string) => {
     if (selectedNrfPin) {
-      // If user connects 5V to VCC, simulate explosion/error
-      if (selectedNrfPin === 'VCC' && pin === '5V') {
-        alert("💥 BOOM! บอร์ด NRF24 ไหม้แล้ว! (รับไฟได้แค่ 3.3V) กรุณาต่อใหม่");
-        setConnections(prev => { const next = {...prev}; delete next['VCC']; return next; });
-        setSelectedNrfPin(null);
-        return;
-      }
       setConnections(prev => ({ ...prev, [selectedNrfPin]: pin }));
       setSelectedNrfPin(null);
     }
   };
 
-  const currentStepData = STEPS[activeStep];
-  
-  // Check if current step's required pins are ALL correctly connected
-  const isStepComplete = currentStepData?.requiredPins.every(
-    pin => connections[pin] === TARGET_WIRING[pin]
+  const removeConnection = (nrfPin: string) => {
+    const newConn = { ...connections };
+    delete newConn[nrfPin];
+    setConnections(newConn);
+  };
+
+  const currentStepData = STEPS.find(s => s.id === activeStep);
+  const isStepComplete = currentStepData?.requiredPins.every(pin => 
+    connections[pin] === TARGET_WIRING[pin]
   );
 
-  // Compute dynamic colors for pins
   const nrfPinColors: Record<string, string> = {};
   const arduinoPinColors: Record<string, string> = {};
-  
+
   Object.entries(connections).forEach(([nrfPin, arduinoPin]) => {
     if (TARGET_WIRING[nrfPin] === arduinoPin) {
-      nrfPinColors[nrfPin] = WIRE_COLORS[nrfPin];
-      arduinoPinColors[arduinoPin] = WIRE_COLORS[nrfPin];
+      const colorClass = WIRE_COLORS[nrfPin] || 'bg-emerald-500 border-emerald-400';
+      nrfPinColors[nrfPin] = `${colorClass} shadow-[0_0_15px_rgba(255,255,255,0.2)]`;
+      arduinoPinColors[arduinoPin] = `${colorClass} shadow-[0_0_15px_rgba(255,255,255,0.2)]`;
     } else {
       nrfPinColors[nrfPin] = 'bg-rose-500 border-rose-300 shadow-[0_0_15px_#f43f5e] animate-pulse';
       arduinoPinColors[arduinoPin] = 'bg-rose-500 border-rose-300 shadow-[0_0_15px_#f43f5e] animate-pulse';
@@ -96,12 +92,34 @@ export function WiringSingleSlide() {
 
   return (
     <div className="w-full h-full flex flex-col bg-transparent text-white font-sans">
-      <div className="text-center mb-4">
+      <div className="text-center mb-4 flex flex-col items-center">
         <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-          จำลองการต่อสาย: Arduino + NRF24L01
+          จำลองการต่อวงจร: Arduino + NRF24L01
         </h2>
-        <p className="text-gray-400 mt-1 text-sm md:text-base">ทำตามคำแนะนำทีละขั้นตอน เพื่อป้องกันอุปกรณ์พัง</p>
+        <p className="text-gray-400 mt-1 text-sm md:text-base mb-3">ทำตามทีละขั้นตอน เพื่อป้องกันอุปกรณ์พัง</p>
+        <button 
+          onClick={() => setShowReference(!showReference)} 
+          className={`flex items-center gap-2 text-sm px-4 py-1.5 rounded-full transition-colors border ${showReference ? 'bg-blue-500 text-white border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.5)]' : 'bg-blue-500/20 text-blue-300 border-blue-500/30 hover:bg-blue-500/30'}`}
+        >
+          <ImageIcon size={16} /> {showReference ? 'ซ่อนภาพวงจรต้นแบบ' : 'ดูภาพวงจรต้นแบบ'}
+        </button>
       </div>
+
+      <AnimatePresence>
+        {showReference && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0, scale: 0.95 }} 
+            animate={{ opacity: 1, height: 'auto', scale: 1 }} 
+            exit={{ opacity: 0, height: 0, scale: 0.95 }} 
+            className="w-full max-w-2xl mx-auto mb-6 overflow-hidden rounded-xl border border-white/10 shadow-2xl relative"
+          >
+            <img src="/images/wiring-reference.jpg" alt="Wiring Reference" className="w-full object-contain bg-white/5" />
+            <button onClick={() => setShowReference(false)} className="absolute top-3 right-3 p-1.5 bg-black/60 hover:bg-black text-white rounded-full backdrop-blur-sm transition-colors">
+              <XCircle size={24} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Guided Step Banner */}
       {currentStepData ? (
