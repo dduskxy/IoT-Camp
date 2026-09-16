@@ -80,7 +80,7 @@ export function SlideLayout({
         
         {/* Main Guide View */}
         <main className="flex-1 overflow-y-auto custom-scrollbar flex flex-col">
-          <div className="flex-1 w-full max-w-7xl mx-auto p-4 md:p-8 flex flex-col">
+          <div className="flex-1 w-full px-4 py-4 md:px-8 md:py-6 flex flex-col">
             <AnimatePresence mode="wait">
               <motion.div 
                 key={currentStep}
@@ -88,19 +88,16 @@ export function SlideLayout({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="flex-1 flex flex-col"
+                className="flex-1 flex flex-col h-full"
               >
                 {/* Clean, Readable Header */}
-                <div className="mb-6 md:mb-8 text-center md:text-left">
-                  <span className="inline-block px-3 py-1 bg-blue-500/10 text-blue-400 text-sm font-bold rounded-full mb-3 border border-blue-500/20">
-                    ขั้นตอนที่ {currentStep} จาก {totalSlides}
-                  </span>
+                <div className="mb-4 md:mb-6 text-center md:text-left shrink-0">
                   <h2 className="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tight">{slide.title}</h2>
                   <p className="text-lg text-slate-400">{slide.subtitle}</p>
                 </div>
 
                 {/* The Interactive Content */}
-                <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-[2rem] p-4 md:p-8 shadow-2xl relative overflow-hidden">
+                <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-3xl p-4 md:p-6 shadow-2xl relative overflow-y-auto min-h-0">
                   {children}
                 </div>
               </motion.div>
