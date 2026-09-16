@@ -187,7 +187,17 @@ export function CodeLabRxSlide() {
                         key={i} 
                         initial={{ opacity: 0, x: -10 }} 
                         animate={{ opacity: 1, x: 0 }}
-                        className={line.includes("Received") ? "text-pink-300" : "text-gray-400"}
+                        className={
+                          line.includes("RED") ? "text-red-400 font-bold" :
+                          line.includes("GREEN") ? "text-green-400 font-bold" :
+                          line.includes("BLUE") ? "text-blue-400 font-bold" :
+                          line.includes("YELLOW") ? "text-yellow-400 font-bold" :
+                          line.includes("PURPLE") ? "text-purple-400 font-bold" :
+                          line.includes("RF24_BROADCAST") ? "text-cyan-300" :
+                          line.includes("SYNC") ? "text-pink-300 font-bold" :
+                          line.includes("SUCCESS") || line.includes("READY") ? "text-emerald-400 font-bold" :
+                          "text-gray-400"
+                        }
                       >
                         {line}
                       </motion.p>
