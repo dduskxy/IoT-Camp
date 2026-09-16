@@ -101,7 +101,7 @@ export function SlideLayout({
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="absolute right-0 top-0 bottom-0 w-full md:w-96 bg-black/30 backdrop-blur-3xl border-l border-white/10 z-50 flex flex-col shadow-2xl"
+                className="absolute right-0 top-0 bottom-0 w-full md:w-96 bg-[#030303]/90 backdrop-blur-xl border-l border-white/10 z-50 flex flex-col shadow-2xl"
               >
                 <div className="h-16 flex items-center justify-between px-6 border-b border-white/10 shrink-0">
                   <h3 className="font-bold text-lg text-white">สารบัญเนื้อหา (Menu)</h3>
@@ -148,9 +148,9 @@ export function SlideLayout({
                 className="absolute inset-0 bg-black/80 backdrop-blur-sm z-[60]"
               />
               <motion.div 
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 className="absolute inset-2 md:inset-4 z-[70] bg-[#1a1a1a]/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
               >
                 <button 
@@ -161,7 +161,7 @@ export function SlideLayout({
                 </button>
                 <div className="flex-1 w-full h-full bg-white relative">
                   <iframe 
-                    src="/docs/present.pdf#toolbar=0&navpanes=0" 
+                    src="/docs/present.pdf#toolbar=0&navpanes=0&view=FitH" 
                     className="w-full h-full border-0"
                     title="Presentation PDF"
                   />
@@ -174,6 +174,7 @@ export function SlideLayout({
     </div>
   );
 }
+
 
 
 
