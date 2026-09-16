@@ -45,7 +45,7 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
   const progressPercentage = (currentStep / totalSlides) * 100;
 
   return (
-    <div className="h-[100dvh] w-screen flex flex-col bg-[#030303] text-white font-sans selection:bg-blue-500/30 overflow-hidden relative">
+    <div className="min-h-[100dvh] flex flex-col bg-[#030303] text-white font-sans selection:bg-blue-500/30 overflow-hidden relative">
       
       {/* Abstract Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -145,7 +145,7 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center w-full max-w-6xl mx-auto p-4 md:p-8 relative z-10 min-h-0">
+      <main className="flex-1 flex flex-col items-center w-full max-w-6xl mx-auto p-4 md:p-8 relative z-10">
         <AnimatePresence mode="wait">
           <motion.div 
             key={currentStep}
@@ -153,7 +153,7 @@ export function SlideLayout({ currentStep, children }: SlideLayoutProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: -20 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full flex-1 flex flex-col bg-white/5 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden relative min-h-0"
+            className="w-full flex-1 flex flex-col bg-white/5 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden relative"
           >
             {/* Inner Glow */}
             <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent pointer-events-none"></div>
