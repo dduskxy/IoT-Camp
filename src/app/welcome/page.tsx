@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, ChevronRight, Cpu, User, Users, Clock, ShieldCheck, Database, Zap, Activity } from "lucide-react";
 import { students, Student } from "@/data/students";
 
-type AppState = "hero" | "search" | "reveal" | "team" | "all_teams" | "timeline";
+type AppState = "hero" | "search" | "reveal" | "team" | "all_teams" | "timeline" | "brief";
 
 export default function WelcomePage() {
   const [appState, setAppState] = useState<AppState>("hero");
@@ -43,9 +43,10 @@ export default function WelcomePage() {
         <header className="py-6 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <Cpu className="w-6 h-6 text-blue-400" />
-            <span className="font-bold tracking-wider text-sm">IoT MISSION</span>
+            <span className="font-bold tracking-wider text-sm cursor-pointer" onClick={() => setAppState("hero")}>IoT MISSION</span>
           </div>
           <div className="flex space-x-4 text-xs font-medium text-white/50">
+            <button onClick={() => setAppState("brief")} className="hover:text-white transition">MISSION BRIEF</button>
             <button onClick={() => setAppState("all_teams")} className="hover:text-white transition">ALL TEAMS</button>
             <button onClick={() => setAppState("timeline")} className="hover:text-white transition">TIMELINE</button>
           </div>
@@ -59,6 +60,7 @@ export default function WelcomePage() {
             {appState === "team" && <TeamSection key="team" student={selectedStudent!} onBack={handleBackToSearch} />}
             {appState === "all_teams" && <AllTeamsSection key="all_teams" onBack={() => setAppState("hero")} />}
             {appState === "timeline" && <TimelineSection key="timeline" onBack={() => setAppState("hero")} />}
+            {appState === "brief" && <BriefSection key="brief" onBack={() => setAppState("hero")} />}
           </AnimatePresence>
         </main>
       </div>
@@ -367,3 +369,41 @@ function TimelineSection({ onBack }: { onBack: () => void }) {
     </motion.div>
   );
 }
+
+function BriefSection({ onBack }: { onBack: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      className="max-w-2xl mx-auto w-full"
+    >
+      <button onClick={onBack} className="mb-6 flex items-center text-white/50 hover:text-white transition-colors">
+        <ChevronRight className="w-4 h-4 mr-1 rotate-180" />
+        กลับหน้าแรก
+      </button>
+
+      <h2 className="text-3xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+        ทำไมเราถึงต้องเรียนรู้ IoT? (Mission Brief)
+      </h2>
+
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-md space-y-6 text-white/80 leading-relaxed">
+        <p>
+          ในยุคปัจจุบัน เทคโนโลยี <strong>Internet of Things (IoT)</strong> ไม่ได้เป็นเพียงแค่เรื่องของอนาคต แต่เป็นสิ่งที่อยู่รอบตัวเราในชีวิตประจำวัน ไม่ว่าจะเป็นสมาร์ทโฮม ระบบการเกษตรอัจฉริยะ หรือแม้แต่ในโรงพยาบาลและอุตสาหกรรมขนาดใหญ่
+        </p>
+        <p>
+          ค่าย <strong>IoT & AUTOMATION MISSION 2026</strong> จัดขึ้นเพื่อเปิดโอกาสให้นักเรียนระดับชั้นมัธยมศึกษาตอนปลาย ได้สัมผัสและลงมือปฏิบัติจริงกับเทคโนโลยีเหล่านี้ โดยเป้าหมายหลักของเราคือ:
+        </p>
+        <ul className="list-disc list-inside space-y-3 text-white/70 ml-2">
+          <li><strong className="text-blue-300">สร้างความเข้าใจพื้นฐาน:</strong> เรียนรู้ว่าอุปกรณ์ต่างๆ สามารถพูดคุยและแลกเปลี่ยนข้อมูลกันได้อย่างไรผ่านอินเทอร์เน็ต</li>
+          <li><strong className="text-blue-300">พัฒนาทักษะการแก้ปัญหา:</strong> ฝึกกระบวนการคิดเชิงตรรกะผ่านการต่อวงจร (Hardware) และเขียนโปรแกรม (Firmware)</li>
+          <li><strong className="text-blue-300">ทำงานร่วมกันเป็นทีม:</strong> เพราะในโลกแห่งความเป็นจริง โปรเจกต์ที่ยิ่งใหญ่เกิดจากการทำงานร่วมกันของคนที่มีความถนัดหลากหลายด้าน (Roles)</li>
+        </ul>
+        <p className="pt-4 border-t border-white/10 text-cyan-200 font-mono text-sm">
+          &#34;เทคโนโลยีไม่ได้มีไว้เพียงแค่ใช้งาน แต่มีไว้เพื่อให้เราสร้างสรรค์สิ่งใหม่&#34;
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
