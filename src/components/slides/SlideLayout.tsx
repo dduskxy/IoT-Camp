@@ -19,6 +19,7 @@ export function SlideLayout({
   const slide = workshopSlides.find(s => s.id === currentStep) || workshopSlides[0];
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isPdfOpen, setIsPdfOpen] = useState(false);
 
   useEffect(() => { setIsMounted(true); }, []);
 
@@ -29,15 +30,13 @@ export function SlideLayout({
       
             {/* Floating Top Right Menu */}
       <div className="fixed top-4 right-4 md:top-6 md:right-8 z-40 flex items-center gap-2">
-        <a 
-          href="/docs/present.pdf" 
-          target="_blank" 
-          rel="noopener noreferrer"
+                <button 
+          onClick={() => setIsPdfOpen(true)}
           className="flex items-center gap-2 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 backdrop-blur-md rounded-full transition-colors border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.3)] text-purple-100"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
           <span className="hidden sm:inline text-sm font-medium">สไลด์ประกอบ</span>
-        </a>
+        </button>
 
         <button 
           onClick={() => setIsSidebarOpen(true)}
@@ -137,8 +136,47 @@ export function SlideLayout({
             </>
           )}
         </AnimatePresence>
+        {/* PDF Modal */}
+        <AnimatePresence>
+          {isPdfOpen && (
+            <>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsPdfOpen(false)}
+                className="absolute inset-0 bg-black/80 backdrop-blur-sm z-[60]"
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="absolute inset-4 md:inset-10 z-[70] bg-[#1a1a1a] border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+              >
+                <div className="h-14 flex items-center justify-between px-6 border-b border-white/10 bg-black/50 shrink-0">
+                  <h3 className="font-bold text-white flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-purple-400"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+                    สไลด์ประกอบ (PDF)
+                  </h3>
+                  <button onClick={() => setIsPdfOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-300 hover:text-white bg-white/5">
+                    <X size={20} />
+                  </button>
+                </div>
+                <div className="flex-1 w-full h-full bg-white">
+                  <iframe 
+                    src="/docs/present.pdf#toolbar=0&navpanes=0" 
+                    className="w-full h-full border-0"
+                    title="Presentation PDF"
+                  />
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
 }
+
+
 
