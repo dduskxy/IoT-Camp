@@ -74,7 +74,7 @@ export default function WelcomePage() {
 
 function AnimatedMesh() {
   return (
-    <div className="absolute inset-0 z-[-1] overflow-hidden pointer-events-none flex justify-center items-center opacity-40 mix-blend-screen">
+    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none flex justify-center items-center opacity-60 mix-blend-screen">
       <motion.svg
         viewBox="0 0 800 800"
         className="w-[800px] h-[800px] md:w-[1200px] md:h-[1200px]"
@@ -83,9 +83,9 @@ function AnimatedMesh() {
       >
         <defs>
           <linearGradient id="meshGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.1" />
-            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.1" />
+            <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.4" />
+            <stop offset="50%" stopColor="#a78bfa" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#22d3ee" stopOpacity="0.4" />
           </linearGradient>
         </defs>
         {Array.from({ length: 18 }).map((_, i) => (
@@ -97,7 +97,7 @@ function AnimatedMesh() {
             ry="100"
             fill="none"
             stroke="url(#meshGrad)"
-            strokeWidth="1"
+            strokeWidth="2"
             style={{ transformOrigin: "400px 400px", rotate: i * 20 }}
             animate={{
               rx: [300, 350, 300],
