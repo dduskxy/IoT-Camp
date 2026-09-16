@@ -37,10 +37,10 @@ export function DualSerialSlide() {
     <div className="flex flex-col h-full w-full text-white">
       
       
-      <div className="flex flex-row justify-between items-center h-[400px] gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-center h-full gap-4 min-h-0 overflow-y-auto overflow-x-hidden custom-scrollbar pb-4 md:pb-0">
         
         {/* TX Terminal */}
-        <div className="flex-1 h-full bg-black/80 rounded-xl border border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.3)] flex flex-col overflow-hidden">
+        <div className="flex-1 w-full h-[250px] md:h-full bg-black/80 rounded-xl border border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.3)] flex flex-col overflow-hidden shrink-0 md:shrink">
           <div className="bg-blue-900/50 p-3 border-b border-blue-500/30 flex items-center gap-2">
             <RadioTower className="text-blue-400 w-5 h-5" />
             <span className="font-bold text-blue-200">COM3 - TX (Sender)</span>
@@ -77,7 +77,7 @@ export function DualSerialSlide() {
         </div>
 
         {/* RX Terminal */}
-        <div className="flex-1 h-full bg-black/80 rounded-xl border border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.3)] flex flex-col overflow-hidden">
+        <div className="flex-1 w-full h-[250px] md:h-full bg-black/80 rounded-xl border border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.3)] flex flex-col overflow-hidden shrink-0 md:shrink">
           <div className="bg-purple-900/50 p-3 border-b border-purple-500/30 flex items-center gap-2">
             <RadioReceiver className="text-purple-400 w-5 h-5" />
             <span className="font-bold text-purple-200">COM4 - RX (Receiver)</span>

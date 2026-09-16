@@ -18,9 +18,9 @@ export function TroubleshootingSlide() {
     <div className="flex flex-col items-center justify-center w-full h-full text-white">
       
 
-      <div className="flex w-full max-w-5xl space-x-8">
+      <div className="flex flex-col md:flex-row w-full max-w-5xl space-y-6 md:space-y-0 md:space-x-8 min-h-0 overflow-y-auto overflow-x-hidden custom-scrollbar pb-6 md:pb-0">
         {/* Steps List */}
-        <div className="w-1/2 space-y-4">
+        <div className="w-full md:w-1/2 space-y-4 shrink-0">
           {steps.map((step) => (
             <motion.div
               key={step.id}
@@ -50,7 +50,7 @@ export function TroubleshootingSlide() {
         </div>
 
         {/* Step Details */}
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <motion.div
             key={activeStep}
             initial={{ opacity: 0, y: 20 }}

@@ -7,11 +7,9 @@ export function TxVsRxSlide() {
   const [activeTab, setActiveTab] = useState<'TX' | 'RX' | null>(null);
 
   return (
-    <div className="flex flex-col h-full w-full text-white">
-      
-      
-      <div className="flex flex-row justify-center items-stretch gap-4 md:p-6 h-full">
-        {/* TX Side */}
+    <div className="flex flex-col h-full w-full text-white overflow-y-auto overflow-x-hidden custom-scrollbar">
+      <div className="flex flex-col md:flex-row justify-center items-stretch gap-4 md:p-6 h-auto md:h-full">
+        {/* TX Card */}
         <motion.div 
           whileHover={{ scale: 1.02 }}
           onClick={() => setActiveTab('TX')}
